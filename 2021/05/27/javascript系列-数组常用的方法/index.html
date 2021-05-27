@@ -6,13 +6,15 @@
   
   <title>javascript系列-数组常用的方法 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
+  <meta name="description" content="数组常见的方法一、操作方法1.    增[^前三种对原数组产生影响，最后一种不会产生影响。]:  （1）push()​    push()方法接收任意长度的数组参数，并将其添加至末尾，返回数组的最新长度。 123const colors &#x3D; [];const count &#x3D; colors.push(&amp;#x27;red&amp;#x27;, &amp;#x27;green&amp;#x27;);console.log(co">
+<meta property="og:type" content="article">
 <meta property="og:title" content="javascript系列-数组常用的方法">
 <meta property="og:url" content="http://example.com/2021/05/27/javascript%E7%B3%BB%E5%88%97-%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数组常见的方法一、操作方法1.    增[^前三种对原数组产生影响，最后一种不会产生影响。]:  （1）push()​    push()方法接收任意长度的数组参数，并将其添加至末尾，返回数组的最新长度。 123const colors &#x3D; [];const count &#x3D; colors.push(&amp;#x27;red&amp;#x27;, &amp;#x27;green&amp;#x27;);console.log(co">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-27T00:56:21.000Z">
-<meta property="article:modified_time" content="2021-05-27T00:56:21.483Z">
+<meta property="article:modified_time" content="2021-05-27T03:19:33.760Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -93,7 +95,70 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h1 id="数组常见的方法"><a href="#数组常见的方法" class="headerlink" title="数组常见的方法"></a>数组常见的方法</h1><h2 id="一、操作方法"><a href="#一、操作方法" class="headerlink" title="一、操作方法"></a>一、操作方法</h2><h3 id="1-增"><a href="#1-增" class="headerlink" title="1.    增"></a>1.    增</h3><p>[^前三种对原数组产生影响，最后一种不会产生影响。]: </p>
+<h4 id="（1）push"><a href="#（1）push" class="headerlink" title="（1）push()"></a>（1）push()</h4><p>​    push()方法接收任意长度的数组参数，并将其添加至末尾，返回数组的最新长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const colors = [];</span><br><span class="line">const count = colors.push(&#x27;red&#x27;, &#x27;green&#x27;);</span><br><span class="line">console.log(count);	// 2</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）unshift"><a href="#（2）unshift" class="headerlink" title="（2）unshift()"></a>（2）unshift()</h4><p>​    unshift()方法数组开头添加任意多个值，然后返回最新的长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const fruits = [];</span><br><span class="line">const fruitsCount = fruits.unshift(&#x27;apple&#x27;, &#x27;orange&#x27;);</span><br><span class="line">console.log(fruitsCount, fruits); // 2 [ &#x27;apple&#x27;, &#x27;orange&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）splice"><a href="#（3）splice" class="headerlink" title="（3）splice()"></a>（3）splice()</h4><p>​    splice()方法传入三个参数，分别是开始位置、0（要删除的元素数量）、插入的元素，返回空的数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;blue&#x27;, &#x27;green&#x27;];</span><br><span class="line">let removed = colors.splice(-1, 0, &#x27;yellow&#x27;, &#x27;black&#x27;);</span><br><span class="line">console.log(removed, colors);   // [] [ &#x27;red&#x27;, &#x27;blue&#x27;, &#x27;yellow&#x27;, &#x27;black&#x27;, &#x27;green&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="（4）concat"><a href="#（4）concat" class="headerlink" title="（4）concat()"></a>（4）concat()</h4><p>​        首先会创建一个当前数组的副本，然后把它的参数添加到当前数组的末尾，不会影响到原来的数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;blue&#x27;, &#x27;green&#x27;];</span><br><span class="line">let colors2 = colors.concat(&#x27;yellow&#x27;, [&#x27;white&#x27;, &#x27;black&#x27;]);</span><br><span class="line">console.log(colors, colors2); // [ &#x27;red&#x27;, &#x27;blue&#x27;, &#x27;green&#x27; ] [ &#x27;red&#x27;, &#x27;blue&#x27;, &#x27;green&#x27;, &#x27;yellow&#x27;, &#x27;white&#x27;, &#x27;black&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-删"><a href="#2-删" class="headerlink" title="2. 删"></a>2. 删</h3><p>[^前三种都会影响到原来的数组，最后一种不会影响。]: </p>
+<h4 id="（1）pop"><a href="#（1）pop" class="headerlink" title="（1）pop()"></a>（1）pop()</h4><p>​    pop()方法用于删除数组的最后一项，同时减少length值，最后返回被删除的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;green&#x27;];</span><br><span class="line">let item = colors.pop();</span><br><span class="line">console.log(item, colors, colors.length); // green [ &#x27;red&#x27; ] 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）shift"><a href="#（2）shift" class="headerlink" title="（2）shift()"></a>（2）shift()</h4><p>​    shift()方法用于删除数组的第一项，同时减少length值，最后返回被删除的值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;green&#x27;];</span><br><span class="line">let item = colors.shift();</span><br><span class="line">console.log(item, colors, colors.length); // red [ &#x27;green&#x27; ] 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）splice-1"><a href="#（3）splice-1" class="headerlink" title="（3）splice()"></a>（3）splice()</h4><p>​    splice()方法传入两个参数，第一个参数起始位置，第二个参数删除的个数，返回包含删除元素的数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;];</span><br><span class="line">let removed = colors.splice(1, 1);</span><br><span class="line">console.log(colors, removed); // [ &#x27;red&#x27;, &#x27;blue&#x27; ] [ &#x27;green&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="（4）slice"><a href="#（4）slice" class="headerlink" title="（4）slice()"></a>（4）slice()</h4><p>​    slice()方法用于创建一个包含原有数组中一个或多个元素的新数组，不会影响原来数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;white&#x27;, &#x27;black&#x27;];</span><br><span class="line">let colors2 = colors.slice(1);</span><br><span class="line">let colors3 = colors.slice(1, 4);</span><br><span class="line"></span><br><span class="line">console.log(colors);  // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;white&#x27;, &#x27;black&#x27; ]</span><br><span class="line">console.log(colors2); // [ &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;white&#x27;, &#x27;black&#x27; ]</span><br><span class="line">console.log(colors3); // [ &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;white&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-改"><a href="#3-改" class="headerlink" title="3. 改"></a>3. 改</h3><h4 id="（1）splice"><a href="#（1）splice" class="headerlink" title="（1）splice()"></a>（1）splice()</h4><p>​    splice()方法传入三个参数，分别为数组的起始位置，删除数组的个数，插入的元素，返回删除元素的数组，对原数组产生影响。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let colors = [&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;white&#x27;, &#x27;black&#x27;];</span><br><span class="line">let removed = colors.splice(1, 1, &#x27;red&#x27;);</span><br><span class="line">console.log(colors, removed); // [ &#x27;red&#x27;, &#x27;red&#x27;, &#x27;blue&#x27;, &#x27;white&#x27;, &#x27;black&#x27; ] [ &#x27;green&#x27; ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-查"><a href="#4-查" class="headerlink" title="4. 查"></a>4. 查</h3><h4 id="（1）indexOf"><a href="#（1）indexOf" class="headerlink" title="（1）indexOf()"></a>（1）indexOf()</h4><p>​    indexOf()方法返回查找的元素在数组中的位置，未找到则返回-1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [1, 2, 3, 3, 4];</span><br><span class="line">const index = numbers.indexOf(3);</span><br><span class="line">console.log(index);   // 2</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）includes"><a href="#（2）includes" class="headerlink" title="（2）includes()"></a>（2）includes()</h4><p>​    includes()方法返回要查找的元素在数组中的位置，查到返true，否则false。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const numbers = [1, 2, 3, 3, 4];</span><br><span class="line">console.log(numbers.includes(4)); // true</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）find"><a href="#（3）find" class="headerlink" title="（3）find()"></a>（3）find()</h4><p>​    find()返回第一个匹配的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const people = [</span><br><span class="line">  &#123;</span><br><span class="line">    name: &quot;Matt&quot;,</span><br><span class="line">    age: 27</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: &quot;Nicholas&quot;,</span><br><span class="line">    age: 29</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">const item = people.find(el =&gt; el.age &lt; 28);</span><br><span class="line">console.log(item);  // &#123; name: &#x27;Matt&#x27;, age: 27 &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、排序方法"><a href="#二、排序方法" class="headerlink" title="二、排序方法"></a>二、排序方法</h2><h3 id="1-reverse"><a href="#1-reverse" class="headerlink" title="1. reverse()"></a>1. reverse()</h3><p>​    将数组元素反方向排列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let numbers = [1, 2, 4, 2, 3];</span><br><span class="line">numbers.reverse();</span><br><span class="line">console.log(numbers);   // [ 3, 2, 4, 2, 1 ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-sort"><a href="#2-sort" class="headerlink" title="2. sort()"></a>2. sort()</h3><p>​    默认情况会按照升序排列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 案例一：sort()会在每一项调用String()转型函数，然后比较字符串来决定顺序。即使5小于10，但字符串&quot;10&quot;在字符串&quot;5&quot;的前头。</span><br><span class="line">const values = [0, 1, 5, 10, 15];</span><br><span class="line">values.sort();</span><br><span class="line">console.log(values);  // [ 0, 1, 10, 15, 5 ]</span><br><span class="line"></span><br><span class="line">// 案例二：</span><br><span class="line">const values = [0, 1, 5, 10, 15];</span><br><span class="line">values.sort((a, b) =&gt; a &lt; b ? -1 : (a &gt; b) ? 1 : 0);</span><br><span class="line">console.log(values);  // [ 0, 1, 5, 10, 15 ]</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、转换方法"><a href="#三、转换方法" class="headerlink" title="三、转换方法"></a>三、转换方法</h2><h3 id="1-join"><a href="#1-join" class="headerlink" title="1. join()"></a>1. join()</h3><p>​    join()方法接收一个参数，即字符串分隔符，返回包含所有项的字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const colors = [&#x27;red&#x27;, &#x27;blue&#x27;, &#x27;green&#x27;];</span><br><span class="line">console.log(colors.join(&#x27;,&#x27;));  // red,blue,green</span><br><span class="line">console.log(colors.join(&#x27;||&#x27;)); // red||blue||green</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、迭代方法"><a href="#四、迭代方法" class="headerlink" title="四、迭代方法"></a>四、迭代方法</h2><p>[^常用的迭代方法都不会改变原数组]: </p>
+<h3 id="1-some"><a href="#1-some" class="headerlink" title="1. some()"></a>1. some()</h3><p>​    some()方法对数组的每一项都运行传入的函数，如果有一项函数返回true，则这个方法都返回true。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let numbers = [1, 2, 3, 4, 2];</span><br><span class="line">let numbersResult = numbers.some(item =&gt; item &gt; 2);</span><br><span class="line">console.log(numbersResult); // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-every"><a href="#2-every" class="headerlink" title="2. every()"></a>2. every()</h3><p>​    every()方法对数组的每一项都运行传入的函数，如果每一项函数返回true，则这个方法都返回true。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let numbers = [1, 2, 3, 4, 2];</span><br><span class="line">let numbersResult = numbers.every(item =&gt; item &gt; 2);</span><br><span class="line">console.log(numbersResult); // false</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-forEach"><a href="#3-forEach" class="headerlink" title="3. forEach()"></a>3. forEach()</h3><p>​    forEach()方法对数组每一项都运行传入的函数，没有返回值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let numbers = [1, 2, 3, 4, 2];</span><br><span class="line">numbers.forEach((item, index, arr) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-filter"><a href="#4-filter" class="headerlink" title="4. filter()"></a>4. filter()</h3><p>​    filter()方法对数组每一项都运行传入的函数，函数返回true的项会组成数组之后返回。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let numbers =  [1, 2, 3, 4, 2];</span><br><span class="line">let filterResult = numbers.filter((item, index, arr) =&gt; item &gt; 1);</span><br><span class="line">console.log(filterResult);  // [ 2, 3, 4, 2 ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-map"><a href="#5-map" class="headerlink" title="5. map()"></a>5. map()</h3><p>​    map()对数组的每一项都运行传入的函数，返回由每次函数调用的结果构成的数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let numbers =  [1, 2, 3, 4, 2];</span><br><span class="line">let filterResult = numbers.map((item, index, arr) =&gt; item * 2);</span><br><span class="line">console.log(filterResult);  // [ 2, 4, 6, 8, 4 ]</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
