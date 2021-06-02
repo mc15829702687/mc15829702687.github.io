@@ -71,6 +71,63 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-作用域" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/" class="article-date">
+  <time class="dt-published" datetime="2021-06-02T02:30:19.000Z" itemprop="datePublished">2021-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/">javascript系列-作用域</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、作用域"><a href="#一、作用域" class="headerlink" title="一、作用域"></a>一、作用域</h3><p>​    作用域，即变量（变量作用域又称执行上下文）和函数生效（能被访问）的区域或集合。</p>
+<p>​    作用域决定了代码区块中变量和其他资源可见性。</p>
+<h3 id="二、分类"><a href="#二、分类" class="headerlink" title="二、分类"></a>二、分类</h3><h4 id="1-全局作用域"><a href="#1-全局作用域" class="headerlink" title="1. 全局作用域"></a>1. 全局作用域</h4><p>​    任何不在函数中或是大括号内声明的变量，都是在全局作用域中，全局作用域下声明的变量会在程序的任何地方可以访问到。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const greeting = &#x27;Hello World&#x27;;</span><br><span class="line">function greet() &#123;</span><br><span class="line">  console.log(greeting);    // Hello World</span><br><span class="line">&#125;</span><br><span class="line">greet();</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-函数作用域"><a href="#2-函数作用域" class="headerlink" title="2. 函数作用域"></a>2. 函数作用域</h4><p>​    函数作用域也称局部作用域，如果一个变量是在函数内部中声明的，它就在一个函数作用域下面。这些变量只能在函数内部中访问，而不能在函数外部中访问。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function greet() &#123;</span><br><span class="line">  const greeting = &#x27;Hello World&#x27;;</span><br><span class="line">  console.log(greeting);</span><br><span class="line">&#125;</span><br><span class="line">greet();                    // Hello World</span><br><span class="line">console.log(greeting);      // ReferenceError: greeting is not defined</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-块级作用域"><a href="#3-块级作用域" class="headerlink" title="3. 块级作用域"></a>3. 块级作用域</h4><p>​    let和const定义的变量，只能在大括号中使用，外部访问不到变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  let greeting = &#x27;Hello World&#x27;;</span><br><span class="line">  var lang = &#x27;English&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(lang);        // English</span><br><span class="line">console.log(greeting);    // ReferenceError: greeting is not defined</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h3><p>​    词法作用域又叫静态作用域，变量被创建时就确定好了，而非执行阶段创建的。也就是说我们写好代码时它的作用域就确定了，<code>JavaScript</code> 遵循的就是词法作用域。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = 2;</span><br><span class="line">function foo() &#123;</span><br><span class="line">  console.log(a);     // 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function bar() &#123;</span><br><span class="line">  var a = 3;</span><br><span class="line">  foo();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar();</span><br></pre></td></tr></table></figure>
+
+<p>​    由于<code>JavaScript</code>遵循词法作用域，相同层级的 <code>foo</code> 和 <code>bar</code> 就没有办法访问到彼此块作用域中的变量，所以输出2。</p>
+<h3 id="四、作用域链"><a href="#四、作用域链" class="headerlink" title="四、作用域链"></a>四、作用域链</h3><p>​    当在javascript中使用一个变量的时候，首先javascript引擎会尝试在当前作用域下寻找该变量，若未找到再到上一层作用域中去寻找，以此类推直到找到该变量或是已经到了全局作用域。</p>
+<p>​    如果在全局作用域里仍然找不到该变量，它就会在全局范围内隐式声明该变量(非严格模式下)或是直接报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var sex = &#x27;男&#x27;;</span><br><span class="line">function person() &#123;</span><br><span class="line">    var name = &#x27;张三&#x27;;</span><br><span class="line">    function student() &#123;</span><br><span class="line">        var age = 18;</span><br><span class="line">        console.log(name); // 张三</span><br><span class="line">        console.log(sex); // 男 </span><br><span class="line">    &#125;</span><br><span class="line">    student();</span><br><span class="line">    console.log(age); // Uncaught ReferenceError: age is not defined</span><br><span class="line">&#125;</span><br><span class="line">person();</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/" data-id="ckpew97eo00007wvm46zz7doy" data-title="javascript系列-作用域" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-闭包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/" class="article-date">
@@ -561,6 +618,10 @@
       <ul>
         
           <li>
+            <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/">javascript系列-作用域</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/">javascript系列-闭包</a>
           </li>
         
@@ -574,10 +635,6 @@
         
           <li>
             <a href="/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/">javascript系列-类型转换机制</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/28/javascript%E7%B3%BB%E5%88%97-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95/">javascript系列-常用字符串的方法</a>
           </li>
         
       </ul>
