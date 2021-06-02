@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>javascript系列-闭包 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、闭包是什么？​    闭包指的是那些引用了另一个函数作用域中变量的函数，通常是在嵌套函数中使用。 ​    闭包可以让在内部函数中访问外部函数作用域。 ​    函数执行时，每个执行上下文中都会有一个包含其中变量的对象。全局上下文中的叫变量对象，它会在代码执行期间始终存在。而函数局部上下文中的叫活动对象，只会在函数执行期间存在。 ​    在一个函数内部定义的函数会把其包含函数的活动对象添加到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript系列-闭包">
+<meta property="og:url" content="http://example.com/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、闭包是什么？​    闭包指的是那些引用了另一个函数作用域中变量的函数，通常是在嵌套函数中使用。 ​    闭包可以让在内部函数中访问外部函数作用域。 ​    函数执行时，每个执行上下文中都会有一个包含其中变量的对象。全局上下文中的叫变量对象，它会在代码执行期间始终存在。而函数局部上下文中的叫活动对象，只会在函数执行期间存在。 ​    在一个函数内部定义的函数会把其包含函数的活动对象添加到">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-02T00:31:03.000Z">
+<meta property="article:modified_time" content="2021-06-02T02:23:44.270Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript系列-闭包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/" class="article-date">
+  <time class="dt-published" datetime="2021-06-02T00:31:03.000Z" itemprop="datePublished">2021-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      javascript系列-闭包
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、闭包是什么？"><a href="#一、闭包是什么？" class="headerlink" title="一、闭包是什么？"></a>一、闭包是什么？</h3><p>​    闭包指的是<strong>那些引用了另一个函数作用域中变量的函数</strong>，通常是在嵌套函数中使用。</p>
+<p>​    闭包可以让在内部函数中访问外部函数作用域。</p>
+<p>​    函数执行时，每个执行上下文中都会有一个包含其中变量的对象。全局上下文中的叫<code>变量对象</code>，它会在代码执行期间始终存在。而函数局部上下文中的叫<code>活动对象</code>，只会在函数执行期间存在。</p>
+<p>​    在一个函数内部定义的函数会把其包含函数的活动对象添加到自己的作用域中。</p>
+<p>​    每个函数在被调用时都会自动创建两个特殊变量：this 和 arguments。内部函数永远不可能直接访问外部函数的这两个变量。</p>
+<h3 id="二、使用场景"><a href="#二、使用场景" class="headerlink" title="二、使用场景"></a>二、使用场景</h3><p>​    任何闭包的使用场景都离不开以下两点：</p>
+<ul>
+<li>创建私有变量</li>
+<li>延长变量的生命周期</li>
+</ul>
+<h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function init() &#123;</span><br><span class="line">  var name = &#x27;mc&#x27;;</span><br><span class="line">  function displayName() &#123;</span><br><span class="line">    console.log(name);</span><br><span class="line">  &#125;</span><br><span class="line">  displayName();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">init();</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-在页面上添加一些可以调整字号的按钮"><a href="#2-在页面上添加一些可以调整字号的按钮" class="headerlink" title="2. 在页面上添加一些可以调整字号的按钮"></a>2. 在页面上添加一些可以调整字号的按钮</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function makeSizer(size) &#123;</span><br><span class="line">      return function() &#123;</span><br><span class="line">        document.body.style.fontSize = size + &#x27;px&#x27;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">const size1 = makeSizer(12);</span><br><span class="line">const size2 = makeSizer(14);</span><br><span class="line">const size3 = makeSizer(16);</span><br><span class="line"></span><br><span class="line">document.querySelector(&#x27;.demo1&#x27;).onclick = size1;</span><br><span class="line">document.querySelector(&#x27;.demo2&#x27;).onclick = size2;</span><br><span class="line">document.querySelector(&#x27;.demo3&#x27;).onclick = size3;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-柯里化函数"><a href="#3-柯里化函数" class="headerlink" title="3. 柯里化函数"></a>3. 柯里化函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function getArea(width) &#123;</span><br><span class="line">  return height =&gt; width * height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const getTenWidth = getArea(10);</span><br><span class="line">console.log(getTenWidth(20));   // 200</span><br><span class="line">console.log(getTenWidth(30));   // 300</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、注意事项"><a href="#三、注意事项" class="headerlink" title="三、注意事项"></a>三、注意事项</h3><p>​    过度使用闭包可能导致内存过度占用，因此建议仅在十分必要时使用。创建的函数被保存在变量中。把变量设置为等于 null 会解除对函数的引用，从而让垃圾回收程序可以将内存释放掉。作用域链也会被销毁，其他作用域（除全局作用域之外）也可以销毁。</p>
+<p>​    例如，在创建新的对象或者类时，方法通常应该关联于对象的原型，而不是定义到对象的构造器中。</p>
+<p>​    原因在于每个对象的创建，方法都会被重新赋值。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/" data-id="ckpeujnzy0000ycvm95qofk3p" data-title="javascript系列-闭包" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">javascript系列-浅拷贝和深拷贝</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/">javascript系列-闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">javascript系列-浅拷贝和深拷贝</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/">==和===的区别</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/">javascript系列-类型转换机制</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/28/javascript%E7%B3%BB%E5%88%97-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95/">javascript系列-常用字符串的方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
