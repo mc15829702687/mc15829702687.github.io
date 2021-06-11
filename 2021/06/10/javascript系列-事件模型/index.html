@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>javascript系列-事件模型 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、事件与事件流​    javascript与HTML交互是通过事件实现的，事件代表文档或浏览器窗口中某个有意义的时刻。可以使用仅在事件发生时执行的监听器（也叫处理程序）订阅事件。 ​    事件流描述了页面接收事件的顺序。 ​    事件流会经历三个阶段：  事件捕获阶段（Capture Phase） 处于目标阶段（Targer Phase） 事件冒泡阶段（Bubbling Phase）  1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript系列-事件模型">
+<meta property="og:url" content="http://example.com/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、事件与事件流​    javascript与HTML交互是通过事件实现的，事件代表文档或浏览器窗口中某个有意义的时刻。可以使用仅在事件发生时执行的监听器（也叫处理程序）订阅事件。 ​    事件流描述了页面接收事件的顺序。 ​    事件流会经历三个阶段：  事件捕获阶段（Capture Phase） 处于目标阶段（Targer Phase） 事件冒泡阶段（Bubbling Phase）  1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-10T00:37:38.000Z">
+<meta property="article:modified_time" content="2021-06-10T02:13:48.466Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript系列-事件模型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-06-10T00:37:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      javascript系列-事件模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、事件与事件流"><a href="#一、事件与事件流" class="headerlink" title="一、事件与事件流"></a>一、事件与事件流</h3><p>​    <code>javascript</code>与<code>HTML</code>交互是通过事件实现的，事件代表文档或浏览器窗口中某个有意义的时刻。可以使用仅在事件发生时执行的<code>监听器</code>（也叫处理程序）订阅事件。</p>
+<p>​    <code>事件流</code>描述了页面接收事件的顺序。</p>
+<p>​    事件流会经历三个阶段：</p>
+<ul>
+<li>事件捕获阶段（Capture Phase）</li>
+<li>处于目标阶段（Targer Phase）</li>
+<li>事件冒泡阶段（Bubbling Phase）</li>
+</ul>
+<h4 id="1-事件冒泡阶段"><a href="#1-事件冒泡阶段" class="headerlink" title="1. 事件冒泡阶段"></a>1. 事件冒泡阶段</h4><p>​    IE事件流被称为<code>事件冒泡</code>，这是因为事件被定义为从最具体的元素（文档树中最深的节点）开始接触，然后向上传播至没有那么具体的元素（文档）。</p>
+<p>​    现代浏览器的事件会一直冒泡到<code>window</code>对象。</p>
+<h4 id="2-事件捕获阶段"><a href="#2-事件捕获阶段" class="headerlink" title="2. 事件捕获阶段"></a>2. 事件捕获阶段</h4><p>​    <code>事件捕获</code>的意思是最不具体的节点应该最先收到事件，而最具体的节点应该最后收到事件。</p>
+<p>​    <code>事件捕获</code>为提前拦截事件提供了可能。</p>
+<h4 id="3-处于目标阶段"><a href="#3-处于目标阶段" class="headerlink" title="3. 处于目标阶段"></a>3. 处于目标阶段</h4><h3 id="二、事件模型"><a href="#二、事件模型" class="headerlink" title="二、事件模型"></a>二、事件模型</h3><h4 id="1-原始事件模型（DOM0级）"><a href="#1-原始事件模型（DOM0级）" class="headerlink" title="1. 原始事件模型（DOM0级）"></a>1. 原始事件模型（DOM0级）</h4><p>​    事件绑定监听函数比较简单，有两种方式：</p>
+<ul>
+<li><p>HTML代码中直接绑定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&quot;fun()&quot;&gt;click&lt;/button&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过JS代码绑定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;btn&#x27;);</span><br><span class="line">btn.onclick = fn;</span><br></pre></td></tr></table></figure>
+
+<p>特点：绑定速度快</p>
+<p><code>DOM0</code>级事件具有很好的跨浏览器优势，会以最快的速度绑定，但由于绑定速度太快，可能页面还未完全加载出来，以至于事件可能无法正常运行。</p>
+<ul>
+<li>只支持冒泡，不支持捕获</li>
+<li>同一个类型的事件只能绑定一次</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;button&quot; id=&quot;btn&quot; onclick=&quot;fun1()&quot;&gt;</span><br><span class="line"></span><br><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.onclick = fun2;</span><br></pre></td></tr></table></figure>
+
+<p>如上，当希望为同一个元素绑定多个同类型事件的时候（上面的这个<code>btn</code>元素绑定2个点击事件），是不被允许的，后绑定的事件会覆盖之前的事件</p>
+<p>删除 <code>DOM0</code> 级事件处理程序只要将对应事件属性置为<code>null</code>即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">btn.onclick = null;</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准事件模型"><a href="#标准事件模型" class="headerlink" title="标准事件模型"></a>标准事件模型</h3><p>在该事件模型中，一次事件共有三个过程:</p>
+<ul>
+<li>事件捕获阶段：事件从<code>document</code>一直向下传播到目标元素, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+<li>事件处理阶段：事件到达目标元素, 触发目标元素的监听函数</li>
+<li>事件冒泡阶段：事件从目标元素冒泡到<code>document</code>, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+</ul>
+<p>事件绑定监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addEventListener(eventType, handler, useCapture)</span><br></pre></td></tr></table></figure>
+
+<p>事件移除监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removeEventListener(eventType, handler, useCapture)</span><br></pre></td></tr></table></figure>
+
+<p>参数如下：</p>
+<ul>
+<li><code>eventType</code>指定事件类型(不要加on)</li>
+<li><code>handler</code>是事件处理函数</li>
+<li><code>useCapture</code>是一个<code>boolean</code>用于指定是否在捕获阶段进行处理，一般设置为<code>false</code>与IE浏览器保持一致</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.addEventListener(‘click’, showMessage, false);</span><br><span class="line">btn.removeEventListener(‘click’, showMessage, false);</span><br></pre></td></tr></table></figure>
+
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ul>
+<li>可以在一个<code>DOM</code>元素上绑定多个事件处理器，各自并不会冲突</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">btn.addEventListener(‘click’, showMessage1, false);</span><br><span class="line">btn.addEventListener(‘click’, showMessage2, false);</span><br><span class="line">btn.addEventListener(‘click’, showMessage3, false);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行时机</li>
+</ul>
+<p>当第三个参数(<code>useCapture</code>)设置为<code>true</code>就在捕获过程中执行，反之在冒泡过程中执行处理函数</p>
+<p>下面举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&#x27;div&#x27;&gt;</span><br><span class="line">    &lt;p id=&#x27;p&#x27;&gt;</span><br><span class="line">        &lt;span id=&#x27;span&#x27;&gt;Click Me!&lt;/span&gt;</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>设置点击事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var div = document.getElementById(&#x27;div&#x27;);</span><br><span class="line">var p = document.getElementById(&#x27;p&#x27;);</span><br><span class="line"></span><br><span class="line">function onClickFn (event) &#123;</span><br><span class="line">    var tagName = event.currentTarget.tagName;</span><br><span class="line">    var phase = event.eventPhase;</span><br><span class="line">    console.log(tagName, phase);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div.addEventListener(&#x27;click&#x27;, onClickFn, false);</span><br><span class="line">p.addEventListener(&#x27;click&#x27;, onClickFn, false);</span><br></pre></td></tr></table></figure>
+
+<p>上述使用了<code>eventPhase</code>，返回一个代表当前执行阶段的整数值。1为捕获阶段、2为事件对象触发阶段、3为冒泡阶段</p>
+<p>点击<code>Click Me!</code>，输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P 3</span><br><span class="line">DIV 3</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>p</code>和<code>div</code>都是在冒泡阶段响应了事件，由于冒泡的特性，裹在里层的<code>p</code>率先做出响应</p>
+<p>如果把第三个参数都改为<code>true</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.addEventListener(&#x27;click&#x27;, onClickFn, true);</span><br><span class="line">p.addEventListener(&#x27;click&#x27;, onClickFn, true);</span><br></pre></td></tr></table></figure>
+
+<p>输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DIV 1</span><br><span class="line">P 1</span><br></pre></td></tr></table></figure>
+
+<p>两者都是在捕获阶段响应事件，所以<code>div</code>比<code>p</code>标签先做出响应</p>
+<h3 id="IE事件模型"><a href="#IE事件模型" class="headerlink" title="IE事件模型"></a>IE事件模型</h3><p>IE事件模型共有两个过程:</p>
+<ul>
+<li>事件处理阶段：事件到达目标元素, 触发目标元素的监听函数。</li>
+<li>事件冒泡阶段：事件从目标元素冒泡到<code>document</code>, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+</ul>
+<p>事件绑定监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">attachEvent(eventType, handler)</span><br></pre></td></tr></table></figure>
+
+<p>事件移除监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">detachEvent(eventType, handler)</span><br></pre></td></tr></table></figure>
+
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.attachEvent(‘onclick’, showMessage);</span><br><span class="line">btn.detachEvent(‘onclick’, showMessage);</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/" data-id="ckprpfki00001w8vm3gqea7ug" data-title="javascript系列-事件模型" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          javascript系列-typeof和instanceof
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">javascript系列-执行上下文和执行栈.js</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -71,6 +71,198 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-typeof和instanceof" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" class="article-date">
+  <time class="dt-published" datetime="2021-06-11T00:38:45.000Z" itemprop="datePublished">2021-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、typeof操作符"><a href="#一、typeof操作符" class="headerlink" title="一、typeof操作符"></a>一、typeof操作符</h3><p>​    <code>typeof</code>操作符返回一个字符串，表示未经计算的操作数的类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">console.log(typeof 1);              // &quot;number&quot;</span><br><span class="line">console.log(typeof &#x27;1&#x27;);            // &quot;string&quot;</span><br><span class="line">console.log(typeof undefined);      // &quot;undefined&quot;</span><br><span class="line">console.log(typeof true);           // &quot;boolean&quot;</span><br><span class="line">console.log(typeof Symbol());       // &quot;symbol&quot;</span><br><span class="line">console.log(typeof null);           // &quot;object&quot;</span><br><span class="line">console.log(typeof []);             // &quot;object&quot;</span><br><span class="line">console.log(typeof &#123;&#125;);             // &quot;object&quot;</span><br><span class="line">console.log(typeof console);        // &quot;object</span><br><span class="line">console.log(typeof console.log);    // &quot;function</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、instanceof操作符"><a href="#二、instanceof操作符" class="headerlink" title="二、instanceof操作符"></a>二、instanceof操作符</h3><p>​    <code>instanceof</code>操作符用来确定一个对象实例的原型链上是否有原型。</p>
+<p>​    使用如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object instanceof constructor</span><br></pre></td></tr></table></figure>
+
+<p>​    构造函数可以通过<code>new</code>操作符实例化对象，<code>instanceof</code>能判断这个对象是否是之前那个构造函数生成的对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function myInstanceof(left, right) &#123;</span><br><span class="line">  // 1. 先判断是否是基本数据类型</span><br><span class="line">  if(typeof left !== &#x27;object&#x27; || left === null) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 2. 获取到实例的原型</span><br><span class="line">  let proto = Object.getPrototypeOf(left);</span><br><span class="line">  while(true) &#123;</span><br><span class="line">    if(proto === null) return false;      // 找到Object顶层</span><br><span class="line">    if(proto = right.prototype) return true;</span><br><span class="line">    proto = Object.getPrototypeOf(proto); // 沿原型链查找，直到返回true或false</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">function Foo() &#123;&#125;</span><br><span class="line">const foo = new Foo();</span><br><span class="line">console.log(myInstanceof(foo, Foo));      // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、区别"><a href="#三、区别" class="headerlink" title="三、区别"></a>三、区别</h3><p>​    <code>typeof</code>和i<code>nstanceof</code>都是判断数据类型的方法，区别如下：</p>
+<ul>
+<li><p><code>typeof</code>返回一个变量的基本类型，<code>instanceof</code>返回的是布尔值。</p>
+</li>
+<li><p><code>instanceof</code>可以准确的判断复杂数据引用数据类型，但是不能判断基础数据类型。</p>
+</li>
+<li><p><code>typeof</code>虽然也能判断基础数据类型（<code>null</code>除外）,但是引用数据类型除<code>function</code>类型以外，其他的也不能判断。</p>
+<p>可以看到以上两种方法都存在弊端，并不能满足所有场景；如果需要通用检测数据类型，可以使用<code>Object.prototype.toString</code>，调用该方法，统一返回格式<code>&quot;[object xxx]&quot;</code>的字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString(&#123;&#125;));               // [object Object]</span><br><span class="line">console.log(Object.prototype.toString.call(&#x27;&#x27;));          // [object String]</span><br><span class="line">console.log(Object.prototype.toString.call(1));           // [object Number]</span><br><span class="line">console.log(Object.prototype.toString.call(true));        // [object Boolean]</span><br><span class="line">console.log(Object.prototype.toString.call(null));        // [object Null]</span><br><span class="line">console.log(Object.prototype.toString.call([]));          // [object Array]</span><br><span class="line">console.log(Object.prototype.toString.call(undefined));   // [object Undefined]</span><br><span class="line">console.log(Object.prototype.toString.call(/123/g));      // [object RegExp]</span><br><span class="line">console.log(Object.prototype.toString.call(new Date()));  // [object Date]</span><br><span class="line">console.log(Object.prototype.toString.call(document));    // [object HTMLDocument]</span><br><span class="line">console.log(Object.prototype.toString.call(window));      // [object Window]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>自己封装一个全局通用判断类型的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 封装一个getType方法来检测</span><br><span class="line">function getType(obj) &#123;</span><br><span class="line">  let type = typeof obj;</span><br><span class="line">  // 先检测是否是基本数据类型，是基本数据类型直接返回</span><br><span class="line">  if(type !== &#x27;object&#x27;) &#123;</span><br><span class="line">    return type;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 对obj是复杂数据类型再进行操作</span><br><span class="line">  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, &#x27;$1&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(getType(null));   // Null</span><br><span class="line">console.log(getType(&#123;&#125;));     // Object</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" data-id="ckprpfkhu0000w8vm4s4b9437" data-title="javascript系列-typeof和instanceof" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javascript系列-事件模型" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time class="dt-published" datetime="2021-06-10T00:37:38.000Z" itemprop="datePublished">2021-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、事件与事件流"><a href="#一、事件与事件流" class="headerlink" title="一、事件与事件流"></a>一、事件与事件流</h3><p>​    <code>javascript</code>与<code>HTML</code>交互是通过事件实现的，事件代表文档或浏览器窗口中某个有意义的时刻。可以使用仅在事件发生时执行的<code>监听器</code>（也叫处理程序）订阅事件。</p>
+<p>​    <code>事件流</code>描述了页面接收事件的顺序。</p>
+<p>​    事件流会经历三个阶段：</p>
+<ul>
+<li>事件捕获阶段（Capture Phase）</li>
+<li>处于目标阶段（Targer Phase）</li>
+<li>事件冒泡阶段（Bubbling Phase）</li>
+</ul>
+<h4 id="1-事件冒泡阶段"><a href="#1-事件冒泡阶段" class="headerlink" title="1. 事件冒泡阶段"></a>1. 事件冒泡阶段</h4><p>​    IE事件流被称为<code>事件冒泡</code>，这是因为事件被定义为从最具体的元素（文档树中最深的节点）开始接触，然后向上传播至没有那么具体的元素（文档）。</p>
+<p>​    现代浏览器的事件会一直冒泡到<code>window</code>对象。</p>
+<h4 id="2-事件捕获阶段"><a href="#2-事件捕获阶段" class="headerlink" title="2. 事件捕获阶段"></a>2. 事件捕获阶段</h4><p>​    <code>事件捕获</code>的意思是最不具体的节点应该最先收到事件，而最具体的节点应该最后收到事件。</p>
+<p>​    <code>事件捕获</code>为提前拦截事件提供了可能。</p>
+<h4 id="3-处于目标阶段"><a href="#3-处于目标阶段" class="headerlink" title="3. 处于目标阶段"></a>3. 处于目标阶段</h4><h3 id="二、事件模型"><a href="#二、事件模型" class="headerlink" title="二、事件模型"></a>二、事件模型</h3><h4 id="1-原始事件模型（DOM0级）"><a href="#1-原始事件模型（DOM0级）" class="headerlink" title="1. 原始事件模型（DOM0级）"></a>1. 原始事件模型（DOM0级）</h4><p>​    事件绑定监听函数比较简单，有两种方式：</p>
+<ul>
+<li><p>HTML代码中直接绑定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&quot;fun()&quot;&gt;click&lt;/button&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过JS代码绑定</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;btn&#x27;);</span><br><span class="line">btn.onclick = fn;</span><br></pre></td></tr></table></figure>
+
+<p>特点：绑定速度快</p>
+<p><code>DOM0</code>级事件具有很好的跨浏览器优势，会以最快的速度绑定，但由于绑定速度太快，可能页面还未完全加载出来，以至于事件可能无法正常运行。</p>
+<ul>
+<li>只支持冒泡，不支持捕获</li>
+<li>同一个类型的事件只能绑定一次</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=&quot;button&quot; id=&quot;btn&quot; onclick=&quot;fun1()&quot;&gt;</span><br><span class="line"></span><br><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.onclick = fun2;</span><br></pre></td></tr></table></figure>
+
+<p>如上，当希望为同一个元素绑定多个同类型事件的时候（上面的这个<code>btn</code>元素绑定2个点击事件），是不被允许的，后绑定的事件会覆盖之前的事件</p>
+<p>删除 <code>DOM0</code> 级事件处理程序只要将对应事件属性置为<code>null</code>即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">btn.onclick = null;</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准事件模型"><a href="#标准事件模型" class="headerlink" title="标准事件模型"></a>标准事件模型</h3><p>在该事件模型中，一次事件共有三个过程:</p>
+<ul>
+<li>事件捕获阶段：事件从<code>document</code>一直向下传播到目标元素, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+<li>事件处理阶段：事件到达目标元素, 触发目标元素的监听函数</li>
+<li>事件冒泡阶段：事件从目标元素冒泡到<code>document</code>, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+</ul>
+<p>事件绑定监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addEventListener(eventType, handler, useCapture)</span><br></pre></td></tr></table></figure>
+
+<p>事件移除监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removeEventListener(eventType, handler, useCapture)</span><br></pre></td></tr></table></figure>
+
+<p>参数如下：</p>
+<ul>
+<li><code>eventType</code>指定事件类型(不要加on)</li>
+<li><code>handler</code>是事件处理函数</li>
+<li><code>useCapture</code>是一个<code>boolean</code>用于指定是否在捕获阶段进行处理，一般设置为<code>false</code>与IE浏览器保持一致</li>
+</ul>
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.addEventListener(‘click’, showMessage, false);</span><br><span class="line">btn.removeEventListener(‘click’, showMessage, false);</span><br></pre></td></tr></table></figure>
+
+<h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><ul>
+<li>可以在一个<code>DOM</code>元素上绑定多个事件处理器，各自并不会冲突</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">btn.addEventListener(‘click’, showMessage1, false);</span><br><span class="line">btn.addEventListener(‘click’, showMessage2, false);</span><br><span class="line">btn.addEventListener(‘click’, showMessage3, false);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行时机</li>
+</ul>
+<p>当第三个参数(<code>useCapture</code>)设置为<code>true</code>就在捕获过程中执行，反之在冒泡过程中执行处理函数</p>
+<p>下面举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&#x27;div&#x27;&gt;</span><br><span class="line">    &lt;p id=&#x27;p&#x27;&gt;</span><br><span class="line">        &lt;span id=&#x27;span&#x27;&gt;Click Me!&lt;/span&gt;</span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>设置点击事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var div = document.getElementById(&#x27;div&#x27;);</span><br><span class="line">var p = document.getElementById(&#x27;p&#x27;);</span><br><span class="line"></span><br><span class="line">function onClickFn (event) &#123;</span><br><span class="line">    var tagName = event.currentTarget.tagName;</span><br><span class="line">    var phase = event.eventPhase;</span><br><span class="line">    console.log(tagName, phase);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">div.addEventListener(&#x27;click&#x27;, onClickFn, false);</span><br><span class="line">p.addEventListener(&#x27;click&#x27;, onClickFn, false);</span><br></pre></td></tr></table></figure>
+
+<p>上述使用了<code>eventPhase</code>，返回一个代表当前执行阶段的整数值。1为捕获阶段、2为事件对象触发阶段、3为冒泡阶段</p>
+<p>点击<code>Click Me!</code>，输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">P 3</span><br><span class="line">DIV 3</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>p</code>和<code>div</code>都是在冒泡阶段响应了事件，由于冒泡的特性，裹在里层的<code>p</code>率先做出响应</p>
+<p>如果把第三个参数都改为<code>true</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.addEventListener(&#x27;click&#x27;, onClickFn, true);</span><br><span class="line">p.addEventListener(&#x27;click&#x27;, onClickFn, true);</span><br></pre></td></tr></table></figure>
+
+<p>输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DIV 1</span><br><span class="line">P 1</span><br></pre></td></tr></table></figure>
+
+<p>两者都是在捕获阶段响应事件，所以<code>div</code>比<code>p</code>标签先做出响应</p>
+<h3 id="IE事件模型"><a href="#IE事件模型" class="headerlink" title="IE事件模型"></a>IE事件模型</h3><p>IE事件模型共有两个过程:</p>
+<ul>
+<li>事件处理阶段：事件到达目标元素, 触发目标元素的监听函数。</li>
+<li>事件冒泡阶段：事件从目标元素冒泡到<code>document</code>, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行</li>
+</ul>
+<p>事件绑定监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">attachEvent(eventType, handler)</span><br></pre></td></tr></table></figure>
+
+<p>事件移除监听函数的方式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">detachEvent(eventType, handler)</span><br></pre></td></tr></table></figure>
+
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var btn = document.getElementById(&#x27;.btn&#x27;);</span><br><span class="line">btn.attachEvent(‘onclick’, showMessage);</span><br><span class="line">btn.detachEvent(‘onclick’, showMessage);</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/" data-id="ckprpfki00001w8vm3gqea7ug" data-title="javascript系列-事件模型" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-执行上下文和执行栈-js" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/" class="article-date">
@@ -569,138 +761,6 @@
 
 
   
-    <article id="post-javascript系列-类型转换机制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time class="dt-published" datetime="2021-05-31T01:54:35.000Z" itemprop="datePublished">2021-05-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/">javascript系列-类型转换机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="javascript系列-类型转换机制"><a href="#javascript系列-类型转换机制" class="headerlink" title="javascript系列-类型转换机制"></a>javascript系列-类型转换机制</h1><h2 id="一、显示转换"><a href="#一、显示转换" class="headerlink" title="一、显示转换"></a>一、显示转换</h2><p>[^常用的方法：Number()，parseInt()，String()，Boolean()]: </p>
-<h3 id="1-Number"><a href="#1-Number" class="headerlink" title="1. Number()"></a>1. Number()</h3><p>​    将任意类型转换为数值类型。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">console.log(Number(234));       // 234</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">  * 字符串</span><br><span class="line">  * 1. 可以被解析为数值，则会转换为相应的值</span><br><span class="line">  * 2. 不可以被解析为数值，则会转换为NaN</span><br><span class="line">  * 3. 空字符串，返回的是0</span><br><span class="line">  */</span><br><span class="line">console.log(Number(&#x27;345&#x27;));     // 345</span><br><span class="line">console.log(Number(&#x27;456jkl&#x27;));  // NaN</span><br><span class="line">console.log(Number(&#x27;&#x27;));        // 0</span><br><span class="line"></span><br><span class="line">// 布尔值，true转为1，false转为0</span><br><span class="line">console.log(Number(true));      // 1</span><br><span class="line">console.log(Number(false));     // 0</span><br><span class="line"></span><br><span class="line">// undefined: 转为NaN</span><br><span class="line">console.log(Number(undefined)); // NaN</span><br><span class="line"></span><br><span class="line">// null: 转为0</span><br><span class="line">console.log(Number(null));      // 0</span><br><span class="line"></span><br><span class="line">// 对象：通常转换为NaN(除了包含单个数值的数组)</span><br><span class="line">console.log(Number(&#123;a: 1&#125;));    // NaN</span><br><span class="line">console.log(Number([1, 2, 3])); // NaN</span><br><span class="line">console.log(Number([1]));       // 1</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-parseInt"><a href="#2-parseInt" class="headerlink" title="2. parseInt()"></a>2. parseInt()</h3><p>​    parseInt()相比Number()，逐个解析字符，遇到字符就会停止解析。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(parseInt(&#x27;12a123&#x27;));    // 12</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-String"><a href="#3-String" class="headerlink" title="3. String()"></a>3. String()</h3><p>​    将任意类型的值转为字符串。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 数值: 转为相应的字符串 </span><br><span class="line">console.log(String(1));             // &quot;1&quot;</span><br><span class="line"></span><br><span class="line">// 字符串：转换后还是原来的值</span><br><span class="line">console.log(String(&#x27;a&#x27;));           // &quot;a&quot;</span><br><span class="line"></span><br><span class="line">// 布尔值：true转为&quot;true&quot;，false转为&quot;false&quot;</span><br><span class="line">console.log(String(true), String(false)); // true false</span><br><span class="line"></span><br><span class="line">// undefined: 转为字符串&quot;undefined&quot;</span><br><span class="line">console.log(String(undefined));     // &quot;undefined&quot;</span><br><span class="line"></span><br><span class="line">// null: 转为&quot;null&quot;</span><br><span class="line">console.log(String(null));          // &quot;null&quot;</span><br><span class="line"></span><br><span class="line">// 对象</span><br><span class="line">console.log(String(&#123;a: 1, b: 2&#125;));  // &quot;[Object, Object]&quot;</span><br><span class="line">console.log(String([1, 2, 3]));             // &quot;1,2,3&quot;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-Boolean"><a href="#4-Boolean" class="headerlink" title="4. Boolean()"></a>4. Boolean()</h3><pre><code> 将任意类型的值转为布尔值。
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">console.log(Boolean(undefined));       // false</span><br><span class="line">console.log(Boolean(null));            // false</span><br><span class="line">console.log(Boolean(0));               // false</span><br><span class="line">console.log(Boolean(NaN));             // false</span><br><span class="line">console.log(Boolean(&#x27;&#x27;));              // false</span><br><span class="line">console.log(Boolean(&#123;&#125;));              // true</span><br><span class="line">console.log(Boolean([]));              // true</span><br><span class="line">console.log(Boolean(new Boolean(false)));   // true</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、隐式转换"><a href="#二、隐式转换" class="headerlink" title="二、隐式转换"></a>二、隐式转换</h2><p>+，-，*，/，%</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 1. 遇到预期为字符串的地方，就会将非字符串的值自动转为字符串</span><br><span class="line">// 具体规则是：先将复合类型的值转为原始类型的值，再将原始类型的值转为字符串</span><br><span class="line">&#x27;5&#x27; + 1 // &#x27;51&#x27;</span><br><span class="line">&#x27;5&#x27; + true // &quot;5true&quot;</span><br><span class="line">&#x27;5&#x27; + false // &quot;5false&quot;</span><br><span class="line">&#x27;5&#x27; + &#123;&#125; // &quot;5[object Object]&quot;</span><br><span class="line">&#x27;5&#x27; + [] // &quot;5&quot;</span><br><span class="line">&#x27;5&#x27; + function ()&#123;&#125; // &quot;5function ()&#123;&#125;&quot;</span><br><span class="line">&#x27;5&#x27; + undefined // &quot;5undefined&quot;</span><br><span class="line">&#x27;5&#x27; + null // &quot;5null&quot;</span><br><span class="line"></span><br><span class="line">// 2. 除了+有可能把运算子转为字符串，其他运算符都会把运算子自动转成数值,null转为数值时，值为0 // undefined转为数值时，值为NaN</span><br><span class="line">&#x27;5&#x27; - &#x27;2&#x27; // 3</span><br><span class="line">&#x27;5&#x27; * &#x27;2&#x27; // 10</span><br><span class="line">true - 1  // 0</span><br><span class="line">false - 1 // -1</span><br><span class="line">&#x27;1&#x27; - 1   // 0</span><br><span class="line">&#x27;5&#x27; * []    // 0</span><br><span class="line">false / &#x27;5&#x27; // 0</span><br><span class="line">&#x27;abc&#x27; - 1   // NaN</span><br><span class="line">null + 1 // 1</span><br><span class="line">undefined + 1 // NaN</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/" data-id="ckpbyluhy000034vm4i69hqns" data-title="javascript系列-类型转换机制" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript系列-常用字符串的方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/05/28/javascript%E7%B3%BB%E5%88%97-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2021-05-28T01:16:35.000Z" itemprop="datePublished">2021-05-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/05/28/javascript%E7%B3%BB%E5%88%97-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95/">javascript系列-常用字符串的方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="javascript系列-字符串常用的方法"><a href="#javascript系列-字符串常用的方法" class="headerlink" title="javascript系列-字符串常用的方法"></a>javascript系列-字符串常用的方法</h1><h2 id="一、操作方法"><a href="#一、操作方法" class="headerlink" title="一、操作方法"></a>一、操作方法</h2><h3 id="1-增"><a href="#1-增" class="headerlink" title="1. 增"></a>1. 增</h3><h4 id="（1）concat"><a href="#（1）concat" class="headerlink" title="（1）concat()"></a>（1）concat()</h4><p>​    concat()将一个字符串或多个字符串拼接成一个新的字符串。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello&#x27;;</span><br><span class="line">let result = stringValue.concat(&#x27; World&#x27;);</span><br><span class="line">console.log(result, stringValue);  // Hello World hello</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-删"><a href="#2-删" class="headerlink" title="2. 删"></a>2. 删</h3><h4 id="（1）slice-，substr-，substring"><a href="#（1）slice-，substr-，substring" class="headerlink" title="（1）slice()，substr()，substring()"></a>（1）slice()，substr()，substring()</h4><p>​    这三个方法都返回调用它们字符串的一个子字符串，而且都接收一个或两个参数。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello World&#x27;;</span><br><span class="line">console.log(stringValue.slice(3));        // lo World</span><br><span class="line">console.log(stringValue.substr(3));       // lo World</span><br><span class="line">console.log(stringValue.substring(3));    // lo World</span><br><span class="line"></span><br><span class="line">console.log(stringValue.slice(3, 5));     // lo</span><br><span class="line">console.log(stringValue.substr(3, 5));    // lo Wo   第二个参数是截取的个数，不是下标</span><br><span class="line">console.log(stringValue.substring(3, 5)); // lo</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-改"><a href="#3-改" class="headerlink" title="3. 改"></a>3. 改</h3><h4 id="（1）trim-，trimLeft-，trimRight"><a href="#（1）trim-，trimLeft-，trimRight" class="headerlink" title="（1）trim()，trimLeft()，trimRight()"></a>（1）trim()，trimLeft()，trimRight()</h4><p>​    删除前、后或者前后所有空格符，再返回新的字符串。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27; Hello World! &#x27;; </span><br><span class="line">console.log(stringValue.trim());      // Hello World!</span><br><span class="line">console.log(stringValue.trimLeft());  // Hello World! </span><br><span class="line">console.log(stringValue.trimRight()); //  Hello World!</span><br></pre></td></tr></table></figure>
-
-<h4 id="（2）repeat"><a href="#（2）repeat" class="headerlink" title="（2）repeat()"></a>（2）repeat()</h4><p>​    接收一个整数参数，表示字符串要复制多少次，然后返回拼接所有副本的结果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello&#x27;;</span><br><span class="line">console.log(stringValue.repeat(2)); // HelloHello</span><br></pre></td></tr></table></figure>
-
-<h4 id="（3）padStart"><a href="#（3）padStart" class="headerlink" title="（3）padStart()"></a>（3）padStart()</h4><p>​    复制字符串，在相应一边填充字符。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;foo&#x27;;</span><br><span class="line">console.log(stringValue.padStart(6));         //    foo 默认补三个空格</span><br><span class="line">console.log(stringValue.padStart(6, &#x27;,&#x27;));    // ,,,foo</span><br></pre></td></tr></table></figure>
-
-<h4 id="（4）toLowerCase-，toUpperCase"><a href="#（4）toLowerCase-，toUpperCase" class="headerlink" title="（4）toLowerCase()，toUpperCase()"></a>（4）toLowerCase()，toUpperCase()</h4><p>​    大小写转换。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello World&#x27;;</span><br><span class="line">console.log(stringValue.toLowerCase());   // hello world</span><br><span class="line">console.log(stringValue.toUpperCase());   // HELLO WORLD</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-查"><a href="#4-查" class="headerlink" title="4. 查"></a>4. 查</h3><h4 id="（1）charAt"><a href="#（1）charAt" class="headerlink" title="（1）charAt()"></a>（1）charAt()</h4><p>​    返回给定索引的字符，由传给方法的整数参数决定。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello World&#x27;;</span><br><span class="line">console.log(stringValue.charAt(2)); // l</span><br></pre></td></tr></table></figure>
-
-<h4 id="（2）indexOf"><a href="#（2）indexOf" class="headerlink" title="（2）indexOf()"></a>（2）indexOf()</h4><p>​    从字符串开头去查找传入的字符串，并返回位置（未找到则返回-1）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;Hello World&#x27;;</span><br><span class="line">console.log(stringValue.indexOf(&#x27;l&#x27;));  // 2</span><br></pre></td></tr></table></figure>
-
-<h4 id="（3）startWith-，includes"><a href="#（3）startWith-，includes" class="headerlink" title="（3）startWith()，includes()"></a>（3）startWith()，includes()</h4><p>​    从字符串中搜索传入的字符串，并返回一个表示是否包含的布尔值。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;foobarbaz&#x27;;</span><br><span class="line">console.log(stringValue.startsWith(&#x27;foo&#x27;));   // true</span><br><span class="line">console.log(stringValue.startsWith(&#x27;bar&#x27;));   // false</span><br><span class="line"></span><br><span class="line">console.log(stringValue.includes(&#x27;bar&#x27;));     // true</span><br><span class="line">console.log(stringValue.includes(&#x27;qux&#x27;));     // false</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、转换方法"><a href="#二、转换方法" class="headerlink" title="二、转换方法"></a>二、转换方法</h2><h3 id="1-split"><a href="#1-split" class="headerlink" title="1. split()"></a>1. split()</h3><p>​    把字符串按照指定的字符拆分成数组。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let stringValue = &#x27;12+13+14+520&#x27;;</span><br><span class="line">console.log(stringValue.split(&#x27;+&#x27;));  // [ &#x27;12&#x27;, &#x27;13&#x27;, &#x27;14&#x27;, &#x27;520&#x27; ]</span><br></pre></td></tr></table></figure>
-
-<h2 id="三、模板匹配方法"><a href="#三、模板匹配方法" class="headerlink" title="三、模板匹配方法"></a>三、模板匹配方法</h2><h3 id="1-match"><a href="#1-match" class="headerlink" title="1. match()"></a>1. match()</h3><p>​    接收一个参数，可以是一个正则表达式字符串，也可以是一个RegExp对象，返回一个数组。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let text = &#x27;cat, bat, sat, fat&#x27;;</span><br><span class="line">const pattern1 = /.at/;</span><br><span class="line">const pattern2 = /.at/g;</span><br><span class="line">console.log(text.match(pattern1));  // [ &#x27;cat&#x27;, index: 0, input: &#x27;cat, bat, sat, fat&#x27;, groups: undefined ]</span><br><span class="line">console.log(text.match(pattern2));  // [ &#x27;cat&#x27;, &#x27;bat&#x27;, &#x27;sat&#x27;, &#x27;fat&#x27; ]</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-search"><a href="#2-search" class="headerlink" title="2. search()"></a>2. search()</h3><p>​    接收一个参数，可以是一个正则表达式字符串，也可以是RegExp对象，找到则返回匹配索引，否则返回的是-1。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const text = &#x27;cat, bat, sat, fat&#x27;;</span><br><span class="line">const pattern = /.at/;</span><br><span class="line">console.log(text.search(pattern));    // 0</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-replace"><a href="#3-replace" class="headerlink" title="3. replace()"></a>3. replace()</h3><p>​    接收两个参数，第一个参数是匹配的内容，第二个参数为替换的元素（可选）。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const text = &#x27;cat, bat, sat, fat&#x27;;</span><br><span class="line">const pattern = /at/g;</span><br><span class="line">console.log(text.replace(pattern, &#x27;on&#x27;));   // con, bon, son, fon</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/05/28/javascript%E7%B3%BB%E5%88%97-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95/" data-id="ckp7mxfbo0000skvmglgj2tbl" data-title="javascript系列-常用字符串的方法" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -737,6 +797,14 @@
       <ul>
         
           <li>
+            <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
           </li>
         
@@ -746,14 +814,6 @@
         
           <li>
             <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/03/javascript%E7%B3%BB%E5%88%97-%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/">javascript系列-原型和原型链</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/">javascript系列-作用域</a>
           </li>
         
       </ul>

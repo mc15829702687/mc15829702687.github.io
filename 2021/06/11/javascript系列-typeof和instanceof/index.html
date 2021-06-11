@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>javascript系列-typeof和instanceof | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、typeof操作符​    typeof操作符返回一个字符串，表示未经计算的操作数的类型。 12345678910console.log(typeof 1);              &#x2F;&#x2F; &quot;number&quot;console.log(typeof &amp;#x27;1&amp;#x27;);            &#x2F;&#x2F; &quot;string&quot;console.log(typeo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript系列-typeof和instanceof">
+<meta property="og:url" content="http://example.com/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、typeof操作符​    typeof操作符返回一个字符串，表示未经计算的操作数的类型。 12345678910console.log(typeof 1);              &#x2F;&#x2F; &quot;number&quot;console.log(typeof &amp;#x27;1&amp;#x27;);            &#x2F;&#x2F; &quot;string&quot;console.log(typeo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-11T00:38:45.000Z">
+<meta property="article:modified_time" content="2021-06-11T02:21:25.888Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript系列-typeof和instanceof" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" class="article-date">
+  <time class="dt-published" datetime="2021-06-11T00:38:45.000Z" itemprop="datePublished">2021-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      javascript系列-typeof和instanceof
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、typeof操作符"><a href="#一、typeof操作符" class="headerlink" title="一、typeof操作符"></a>一、typeof操作符</h3><p>​    <code>typeof</code>操作符返回一个字符串，表示未经计算的操作数的类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">console.log(typeof 1);              // &quot;number&quot;</span><br><span class="line">console.log(typeof &#x27;1&#x27;);            // &quot;string&quot;</span><br><span class="line">console.log(typeof undefined);      // &quot;undefined&quot;</span><br><span class="line">console.log(typeof true);           // &quot;boolean&quot;</span><br><span class="line">console.log(typeof Symbol());       // &quot;symbol&quot;</span><br><span class="line">console.log(typeof null);           // &quot;object&quot;</span><br><span class="line">console.log(typeof []);             // &quot;object&quot;</span><br><span class="line">console.log(typeof &#123;&#125;);             // &quot;object&quot;</span><br><span class="line">console.log(typeof console);        // &quot;object</span><br><span class="line">console.log(typeof console.log);    // &quot;function</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、instanceof操作符"><a href="#二、instanceof操作符" class="headerlink" title="二、instanceof操作符"></a>二、instanceof操作符</h3><p>​    <code>instanceof</code>操作符用来确定一个对象实例的原型链上是否有原型。</p>
+<p>​    使用如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">object instanceof constructor</span><br></pre></td></tr></table></figure>
+
+<p>​    构造函数可以通过<code>new</code>操作符实例化对象，<code>instanceof</code>能判断这个对象是否是之前那个构造函数生成的对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function myInstanceof(left, right) &#123;</span><br><span class="line">  // 1. 先判断是否是基本数据类型</span><br><span class="line">  if(typeof left !== &#x27;object&#x27; || left === null) &#123;</span><br><span class="line">    return false;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 2. 获取到实例的原型</span><br><span class="line">  let proto = Object.getPrototypeOf(left);</span><br><span class="line">  while(true) &#123;</span><br><span class="line">    if(proto === null) return false;      // 找到Object顶层</span><br><span class="line">    if(proto = right.prototype) return true;</span><br><span class="line">    proto = Object.getPrototypeOf(proto); // 沿原型链查找，直到返回true或false</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">function Foo() &#123;&#125;</span><br><span class="line">const foo = new Foo();</span><br><span class="line">console.log(myInstanceof(foo, Foo));      // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、区别"><a href="#三、区别" class="headerlink" title="三、区别"></a>三、区别</h3><p>​    <code>typeof</code>和i<code>nstanceof</code>都是判断数据类型的方法，区别如下：</p>
+<ul>
+<li><p><code>typeof</code>返回一个变量的基本类型，<code>instanceof</code>返回的是布尔值。</p>
+</li>
+<li><p><code>instanceof</code>可以准确的判断复杂数据引用数据类型，但是不能判断基础数据类型。</p>
+</li>
+<li><p><code>typeof</code>虽然也能判断基础数据类型（<code>null</code>除外）,但是引用数据类型除<code>function</code>类型以外，其他的也不能判断。</p>
+<p>可以看到以上两种方法都存在弊端，并不能满足所有场景；如果需要通用检测数据类型，可以使用<code>Object.prototype.toString</code>，调用该方法，统一返回格式<code>&quot;[object xxx]&quot;</code>的字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.toString(&#123;&#125;));               // [object Object]</span><br><span class="line">console.log(Object.prototype.toString.call(&#x27;&#x27;));          // [object String]</span><br><span class="line">console.log(Object.prototype.toString.call(1));           // [object Number]</span><br><span class="line">console.log(Object.prototype.toString.call(true));        // [object Boolean]</span><br><span class="line">console.log(Object.prototype.toString.call(null));        // [object Null]</span><br><span class="line">console.log(Object.prototype.toString.call([]));          // [object Array]</span><br><span class="line">console.log(Object.prototype.toString.call(undefined));   // [object Undefined]</span><br><span class="line">console.log(Object.prototype.toString.call(/123/g));      // [object RegExp]</span><br><span class="line">console.log(Object.prototype.toString.call(new Date()));  // [object Date]</span><br><span class="line">console.log(Object.prototype.toString.call(document));    // [object HTMLDocument]</span><br><span class="line">console.log(Object.prototype.toString.call(window));      // [object Window]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>自己封装一个全局通用判断类型的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 封装一个getType方法来检测</span><br><span class="line">function getType(obj) &#123;</span><br><span class="line">  let type = typeof obj;</span><br><span class="line">  // 先检测是否是基本数据类型，是基本数据类型直接返回</span><br><span class="line">  if(type !== &#x27;object&#x27;) &#123;</span><br><span class="line">    return type;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 对obj是复杂数据类型再进行操作</span><br><span class="line">  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, &#x27;$1&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(getType(null));   // Null</span><br><span class="line">console.log(getType(&#123;&#125;));     // Object</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" data-id="ckprpfkhu0000w8vm4s4b9437" data-title="javascript系列-typeof和instanceof" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">javascript系列-事件模型</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
