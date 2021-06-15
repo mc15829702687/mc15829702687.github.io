@@ -71,6 +71,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-等于操作符和全等操作符的区别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
+  <time class="dt-published" datetime="2021-06-01T00:39:29.000Z" itemprop="datePublished">2021-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/">==和===的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="和-的区别"><a href="#和-的区别" class="headerlink" title="==和===的区别"></a>==和===的区别</h1><h2 id="一、等于操作符"><a href="#一、等于操作符" class="headerlink" title="一、等于操作符"></a>一、等于操作符</h2><p>[^javascript中存在隐式转换，等于操作符会在比较中先进行类型转换，再确定操作数是否相等。]: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 1. 如果任一操作数是布尔值，会先转为数值进行比较</span><br><span class="line">console.log(true == 1);       // true</span><br><span class="line"></span><br><span class="line">// 2. 如果任一操作数是字符串，另一操作数是数值，会将字符串转为数值，再进行比较</span><br><span class="line">console.log(&#x27;55&#x27; === 55);     // false</span><br><span class="line"></span><br><span class="line">// 3. 如果一个操作数是对象，则会调用其valueOf()取得其原始值，再比较</span><br><span class="line">console.log(&#123;valueOf() &#123;return 1&#125;&#125; == 1);   // true</span><br><span class="line"></span><br><span class="line">// 4. null和undefined相等</span><br><span class="line">console.log(null == undefined);     // true</span><br><span class="line"></span><br><span class="line">// 5. 如果任一操作数是NaN，相等操作符都会返回false</span><br><span class="line">console.log(NaN == NaN);           // false</span><br><span class="line"></span><br><span class="line">// 6. 两个操作数都是对象，则判断是不是同一对象</span><br><span class="line">console.log(&#123;&#125; == &#123;&#125;);             // false</span><br><span class="line">console.log([] == []);             // false</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、全等操作符"><a href="#二、全等操作符" class="headerlink" title="二、全等操作符"></a>二、全等操作符</h2><p>[^类型相等，值也相等。]: </p>
+<h2 id="三、区别"><a href="#三、区别" class="headerlink" title="三、区别"></a>三、区别</h2><ol>
+<li>相等运算符会做类型转换在进行比较，全等运算符直接比较。</li>
+<li>相等运算符undefined和null相等。</li>
+<li>除了比较null和undefined使用相等运算符，其余全使用全等运算符。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/" data-id="ckpdder2d00000gvmae58guio" data-title="==和===的区别" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-类型转换机制" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/05/31/javascript%E7%B3%BB%E5%88%97-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%9C%BA%E5%88%B6/" class="article-date">
@@ -391,6 +438,10 @@
       <ul>
         
           <li>
+            <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
           </li>
         
@@ -404,10 +455,6 @@
         
           <li>
             <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
           </li>
         
       </ul>

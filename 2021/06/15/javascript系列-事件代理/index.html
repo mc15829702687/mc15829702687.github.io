@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>javascript系列-事件代理 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、定义​    把一个元素响应事件（click，keydown…）的函数委托到另一个元素。 ​    事件委托会把一组或者一个事件绑定到父级或者更外层元素上，真正绑定事件的是外层元素，而不是目标元素。 二、案例1234567&lt;ul id&#x3D;&quot;list&quot;&gt;   &lt;li&gt;按钮1&lt;&#x2F;li&gt;   &lt;li&gt;按钮2&lt;&#x2F;li&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript系列-事件代理">
+<meta property="og:url" content="http://example.com/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、定义​    把一个元素响应事件（click，keydown…）的函数委托到另一个元素。 ​    事件委托会把一组或者一个事件绑定到父级或者更外层元素上，真正绑定事件的是外层元素，而不是目标元素。 二、案例1234567&lt;ul id&#x3D;&quot;list&quot;&gt;   &lt;li&gt;按钮1&lt;&#x2F;li&gt;   &lt;li&gt;按钮2&lt;&#x2F;li&gt;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-15T00:43:45.000Z">
+<meta property="article:modified_time" content="2021-06-15T03:19:54.430Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-javascript系列-事件代理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2021-06-15T00:43:45.000Z" itemprop="datePublished">2021-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      javascript系列-事件代理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、定义"><a href="#一、定义" class="headerlink" title="一、定义"></a>一、定义</h3><p>​    把一个元素响应事件（click，keydown…）的函数委托到另一个元素。</p>
+<p>​    事件委托会把一组或者一个事件绑定到父级或者更外层元素上，真正绑定事件的是外层元素，而不是目标元素。</p>
+<h3 id="二、案例"><a href="#二、案例" class="headerlink" title="二、案例"></a>二、案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul id=&quot;list&quot;&gt;</span><br><span class="line">   &lt;li&gt;按钮1&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮2&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮3&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮4&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮5&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 1. 耗性能</span><br><span class="line">   const lis = document.getElementsByTagName(&#x27;li&#x27;);</span><br><span class="line">   for(let i=0; i&lt;lis.length; i++) &#123;</span><br><span class="line">     lis[i].onclick = function(e) &#123;</span><br><span class="line">       console.log(e.target.innerHTML);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 2. 给父层元素</span><br><span class="line">document.getElementById(&#x27;list&#x27;).addEventListener(&#x27;click&#x27;, function(e) &#123;</span><br><span class="line">  // 兼容性处理</span><br><span class="line">  const event = e || window.event;</span><br><span class="line">  const target = event.target || event.srcElement;</span><br><span class="line"></span><br><span class="line">  // 判断是否匹配目标元素</span><br><span class="line">  if(target.nodeName.toLocaleLowerCase() === &#x27;li&#x27;) &#123;</span><br><span class="line">    console.log(target.nodeName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>​    适合事件委托的事件有：<code>click</code>、<code>mousedown</code>、<code>mouseup</code>、<code>keydown</code>、<code>keyup</code>、<code>keypress</code></p>
+<p>​    优点：</p>
+<ul>
+<li><p>减少整个页面的内存，提升性能</p>
+</li>
+<li><p>动态绑定，减少重复</p>
+</li>
+</ul>
+<p>​    局限性：</p>
+<ul>
+<li><code>focus</code>、<code>blur</code>这些事件没有事件冒泡机制，所以无法进行委托绑定事件</li>
+<li><code>mousemove</code>、<code>mouseout</code>这样的事件，虽然有事件冒泡，但是只能不断通过位置去计算定位，对性能消耗高，因此也是不适合于事件委托的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/" data-id="ckpxhah3d0000kkvm6wbwbw0t" data-title="javascript系列-事件代理" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">javascript系列-typeof和instanceof</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

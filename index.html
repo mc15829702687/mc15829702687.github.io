@@ -71,6 +71,65 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-事件代理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2021-06-15T00:43:45.000Z" itemprop="datePublished">2021-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、定义"><a href="#一、定义" class="headerlink" title="一、定义"></a>一、定义</h3><p>​    把一个元素响应事件（click，keydown…）的函数委托到另一个元素。</p>
+<p>​    事件委托会把一组或者一个事件绑定到父级或者更外层元素上，真正绑定事件的是外层元素，而不是目标元素。</p>
+<h3 id="二、案例"><a href="#二、案例" class="headerlink" title="二、案例"></a>二、案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul id=&quot;list&quot;&gt;</span><br><span class="line">   &lt;li&gt;按钮1&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮2&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮3&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮4&lt;/li&gt;</span><br><span class="line">   &lt;li&gt;按钮5&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 1. 耗性能</span><br><span class="line">   const lis = document.getElementsByTagName(&#x27;li&#x27;);</span><br><span class="line">   for(let i=0; i&lt;lis.length; i++) &#123;</span><br><span class="line">     lis[i].onclick = function(e) &#123;</span><br><span class="line">       console.log(e.target.innerHTML);</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 2. 给父层元素</span><br><span class="line">document.getElementById(&#x27;list&#x27;).addEventListener(&#x27;click&#x27;, function(e) &#123;</span><br><span class="line">  // 兼容性处理</span><br><span class="line">  const event = e || window.event;</span><br><span class="line">  const target = event.target || event.srcElement;</span><br><span class="line"></span><br><span class="line">  // 判断是否匹配目标元素</span><br><span class="line">  if(target.nodeName.toLocaleLowerCase() === &#x27;li&#x27;) &#123;</span><br><span class="line">    console.log(target.nodeName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>​    适合事件委托的事件有：<code>click</code>、<code>mousedown</code>、<code>mouseup</code>、<code>keydown</code>、<code>keyup</code>、<code>keypress</code></p>
+<p>​    优点：</p>
+<ul>
+<li><p>减少整个页面的内存，提升性能</p>
+</li>
+<li><p>动态绑定，减少重复</p>
+</li>
+</ul>
+<p>​    局限性：</p>
+<ul>
+<li><code>focus</code>、<code>blur</code>这些事件没有事件冒泡机制，所以无法进行委托绑定事件</li>
+<li><code>mousemove</code>、<code>mouseout</code>这样的事件，虽然有事件冒泡，但是只能不断通过位置去计算定位，对性能消耗高，因此也是不适合于事件委托的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/" data-id="ckpxhah3d0000kkvm6wbwbw0t" data-title="javascript系列-事件代理" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-typeof和instanceof" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/" class="article-date">
@@ -714,53 +773,6 @@
 
 
   
-    <article id="post-javascript系列-等于操作符和全等操作符的区别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
-  <time class="dt-published" datetime="2021-06-01T00:39:29.000Z" itemprop="datePublished">2021-06-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/">==和===的区别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="和-的区别"><a href="#和-的区别" class="headerlink" title="==和===的区别"></a>==和===的区别</h1><h2 id="一、等于操作符"><a href="#一、等于操作符" class="headerlink" title="一、等于操作符"></a>一、等于操作符</h2><p>[^javascript中存在隐式转换，等于操作符会在比较中先进行类型转换，再确定操作数是否相等。]: </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 1. 如果任一操作数是布尔值，会先转为数值进行比较</span><br><span class="line">console.log(true == 1);       // true</span><br><span class="line"></span><br><span class="line">// 2. 如果任一操作数是字符串，另一操作数是数值，会将字符串转为数值，再进行比较</span><br><span class="line">console.log(&#x27;55&#x27; === 55);     // false</span><br><span class="line"></span><br><span class="line">// 3. 如果一个操作数是对象，则会调用其valueOf()取得其原始值，再比较</span><br><span class="line">console.log(&#123;valueOf() &#123;return 1&#125;&#125; == 1);   // true</span><br><span class="line"></span><br><span class="line">// 4. null和undefined相等</span><br><span class="line">console.log(null == undefined);     // true</span><br><span class="line"></span><br><span class="line">// 5. 如果任一操作数是NaN，相等操作符都会返回false</span><br><span class="line">console.log(NaN == NaN);           // false</span><br><span class="line"></span><br><span class="line">// 6. 两个操作数都是对象，则判断是不是同一对象</span><br><span class="line">console.log(&#123;&#125; == &#123;&#125;);             // false</span><br><span class="line">console.log([] == []);             // false</span><br></pre></td></tr></table></figure>
-
-<h2 id="二、全等操作符"><a href="#二、全等操作符" class="headerlink" title="二、全等操作符"></a>二、全等操作符</h2><p>[^类型相等，值也相等。]: </p>
-<h2 id="三、区别"><a href="#三、区别" class="headerlink" title="三、区别"></a>三、区别</h2><ol>
-<li>相等运算符会做类型转换在进行比较，全等运算符直接比较。</li>
-<li>相等运算符undefined和null相等。</li>
-<li>除了比较null和undefined使用相等运算符，其余全使用全等运算符。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/" data-id="ckpdder2d00000gvmae58guio" data-title="==和===的区别" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -797,6 +809,10 @@
       <ul>
         
           <li>
+            <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
           </li>
         
@@ -810,10 +826,6 @@
         
           <li>
             <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
           </li>
         
       </ul>
