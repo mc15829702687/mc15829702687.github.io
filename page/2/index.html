@@ -71,6 +71,77 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-浅拷贝和深拷贝" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="article-date">
+  <time class="dt-published" datetime="2021-06-01T05:21:02.000Z" itemprop="datePublished">2021-06-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/">javascript系列-浅拷贝和深拷贝</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、数据类型存储"><a href="#一、数据类型存储" class="headerlink" title="一、数据类型存储"></a>一、数据类型存储</h3><p>javascript存在两大数据类型：</p>
+<ul>
+<li>基本数据类型</li>
+<li>引用数据类型</li>
+</ul>
+<p>基本数据类型保存在栈内存中。</p>
+<p>引用类型数据保存在堆内存中，引用数据类型的变量是一个指向堆内存中实际对象的引用，存在栈中。（堆允许程序在运行时动态申请某个大小的内存空间）</p>
+<h3 id="二、浅拷贝"><a href="#二、浅拷贝" class="headerlink" title="二、浅拷贝"></a>二、浅拷贝</h3><p>浅拷贝，指的是创建新的数据，这个数据有着原始数据属性值的一份精确拷贝。</p>
+<p>如果属性是基本类型数据，则拷贝的是数据的值；如果属性值是引用数据类型，则拷贝的是内存地址。</p>
+<p>浅拷贝拷贝一层，深层次的引用类型则共享内存地址。</p>
+<p>下面简单实现一个浅拷贝：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function shallowClone(obj) &#123;</span><br><span class="line">  const newObj = &#123;&#125;;</span><br><span class="line">  for(let prop in obj) &#123;</span><br><span class="line">    if(obj.hasOwnProperty(prop)) &#123;</span><br><span class="line">      newObj[prop] = obj[prop];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return newObj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(shallowClone(&#123;a: 1, b: 2&#125;));    // &#123; a: 1, b: 2 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在javascript中存在的浅拷贝现象有：</p>
+<ul>
+<li>Object.assign()</li>
+<li>Array.prototype.slice()，Array.prototype.concat()</li>
+<li>使用扩展运算符实现的复制</li>
+</ul>
+<h4 id="1-Object-assign"><a href="#1-Object-assign" class="headerlink" title="1. Object.assign()"></a>1. Object.assign()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const newObj = Object.assign(&#123;&#125;, obj);</span><br><span class="line">newObj.a = 3;</span><br><span class="line">newObj.c[0] = 3;</span><br><span class="line">newObj.d.e = 3;</span><br><span class="line">console.log(obj);               // &#123; a: 1, b: &#x27;fff&#x27;, c: [ 3, 2, 3 ], d: &#123; e: 3 &#125; &#125;</span><br><span class="line">console.log(newObj);            // &#123; a: 3, b: &#x27;fff&#x27;, c: [ 3, 2, 3 ], d: &#123; e: 3 &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-slice"><a href="#2-slice" class="headerlink" title="2. slice()"></a>2. slice()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const newArr = arr.slice(0);</span><br><span class="line">newArr[0] = &#x27;Y&#x27;;</span><br><span class="line">newArr[3].brother = &#x27;mc&#x27;;</span><br><span class="line">console.log(arr);                 // [ &#x27;I&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br><span class="line">console.log(newArr);              // [ &#x27;Y&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-concat"><a href="#3-concat" class="headerlink" title="3. concat()"></a>3. concat()</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const newArr = arr.concat();</span><br><span class="line">newArr[0] = &#x27;Y&#x27;;</span><br><span class="line">newArr[3].brother = &#x27;mc&#x27;;</span><br><span class="line">console.log(arr);                 // [ &#x27;I&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br><span class="line">console.log(newArr);              // [ &#x27;Y&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-扩展运算符"><a href="#4-扩展运算符" class="headerlink" title="4. 扩展运算符"></a>4. 扩展运算符</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const newArr = [...arr];</span><br><span class="line">newArr[0] = &#x27;Y&#x27;;</span><br><span class="line">newArr[3].brother = &#x27;mc&#x27;;</span><br><span class="line">console.log(arr);                 // [ &#x27;I&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br><span class="line">console.log(newArr);              // [ &#x27;Y&#x27;, &#x27;Love&#x27;, &#x27;Ms.Zhang&#x27;, &#123; brother: &#x27;mc&#x27; &#125; ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、深拷贝"><a href="#三、深拷贝" class="headerlink" title="三、深拷贝"></a>三、深拷贝</h3><p>深拷贝开辟一个新的栈，两个对象的属性完全相同，但是对应两个不同的地址，修改一个对象的属性不会改变另一个对象的属性。</p>
+<h4 id="1-JSON-stringify"><a href="#1-JSON-stringify" class="headerlink" title="1. JSON.stringify()"></a>1. JSON.stringify()</h4><p>[^弊端：会忽略undefined, Symbol, function]: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const newObj = JSON.parse(JSON.stringify(obj));</span><br><span class="line">newObj.a = 3;</span><br><span class="line">newObj.c[0] = 3;</span><br><span class="line">newObj.d.e = 3;</span><br><span class="line">console.log(obj);               // &#123; a: 1, b: &#x27;fff&#x27;, c: [ 1, 2, 3 ], d: &#123; e: 33 &#125;, l: undefined, j: Symbol(&#x27;A‘), k: [Function: k] &#125;</span><br><span class="line">console.log(newObj);            // &#123; a: 3, b: &#x27;fff&#x27;, c: [ 3, 2, 3 ], d: &#123; e: 3 &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-手写循环递归"><a href="#2-手写循环递归" class="headerlink" title="2. 手写循环递归"></a>2. 手写循环递归</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj, hash = new WeakMap()) &#123;</span><br><span class="line">  if(obj === null) return null;</span><br><span class="line">  if(obj instanceof Date) return new Date(obj);</span><br><span class="line">  if(obj instanceof RegExp) return new RegExp(obj);</span><br><span class="line"></span><br><span class="line">  // 基本数据类型，直接返回</span><br><span class="line">  if(typeof obj !== &#x27;object&#x27;) return obj;</span><br><span class="line"></span><br><span class="line">  // 是对象的话就进行深拷贝</span><br><span class="line">  if(hash.get(obj)) return hash.get(obj);</span><br><span class="line">  console.log(hash.get(obj));</span><br><span class="line">  let cloneObj = new obj.constructor();</span><br><span class="line">  hash.set(obj, cloneObj);</span><br><span class="line">  </span><br><span class="line">  for(let prop in obj) &#123;</span><br><span class="line">    if(obj.hasOwnProperty(prop)) &#123;</span><br><span class="line">      // 递归</span><br><span class="line">      cloneObj[prop] = deepClone(obj[prop], hash);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return cloneObj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D/" data-id="ckpdlabgn0000y0vmc0di4k27" data-title="javascript系列-浅拷贝和深拷贝" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-等于操作符和全等操作符的区别" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/01/javascript%E7%B3%BB%E5%88%97-%E7%AD%89%E4%BA%8E%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%92%8C%E5%85%A8%E7%AD%89%E6%93%8D%E4%BD%9C%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB/" class="article-date">
@@ -438,6 +509,10 @@
       <ul>
         
           <li>
+            <a href="/2021/06/16/javascript%E7%B3%BB%E5%88%97-new%E6%93%8D%E4%BD%9C%E7%AC%A6/">javascript系列-new操作符</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
           </li>
         
@@ -451,10 +526,6 @@
         
           <li>
             <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/07/javascipt%E7%B3%BB%E5%88%97-this%E5%AF%B9%E8%B1%A1/">javascipt系列-this对象</a>
           </li>
         
       </ul>
