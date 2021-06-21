@@ -71,6 +71,125 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-javascript系列-call、apply、bind" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/21/javascript%E7%B3%BB%E5%88%97-call%E3%80%81apply%E3%80%81bind/" class="article-date">
+  <time class="dt-published" datetime="2021-06-21T00:43:23.000Z" itemprop="datePublished">2021-06-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/21/javascript%E7%B3%BB%E5%88%97-call%E3%80%81apply%E3%80%81bind/">javascript系列-call、apply、bind</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、call的实现"><a href="#一、call的实现" class="headerlink" title="一、call的实现"></a>一、call的实现</h3><ul>
+<li>第一个参数为<code>null</code>或者<code>undefined</code>时，<code>this</code>指向<code>window</code>，值为原始值的指向该原始值的自动包装对象，如：String，Number，Boolean。</li>
+<li>为了避免函数名与上下文<code>[context]</code>的属性命名相冲突，使用<code>Symbol</code>类型作为唯一值。</li>
+<li>将函数作为传入的上下文<code>[context]</code>的属性执行。</li>
+<li>函数执行完成后删除该属性。</li>
+<li>返回执行的结果。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// ## call</span><br><span class="line">   Function.prototype.myCall = function (context, ...args) &#123;</span><br><span class="line">     // 1. 如果传入的context是null或undefined，则将window赋值给context</span><br><span class="line">     const ctx = context || window</span><br><span class="line"></span><br><span class="line">     // 2. 定义唯一标识，以免与context上的属性名冲突</span><br><span class="line">     const func = Symbol()</span><br><span class="line"></span><br><span class="line">     // 3. 将this赋值给ctx[func]</span><br><span class="line">     ctx[func] = this</span><br><span class="line"></span><br><span class="line">     // 4. 解析参数</span><br><span class="line">     args = args || []</span><br><span class="line"></span><br><span class="line">     // 5. 以对象的方式调用，此时this指向ctx</span><br><span class="line">     const res = args.length &gt; 0 ? ctx[func](args) : ctx[func]()</span><br><span class="line"></span><br><span class="line">     // 6. 删除该方法，否则会造成传入对象的污染</span><br><span class="line">     delete ctx[func]</span><br><span class="line"></span><br><span class="line">     // 6. 返回结果</span><br><span class="line">     return res</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   // 示例1</span><br><span class="line">   // let name = &#x27;mc&#x27;</span><br><span class="line">   // const person = &#123;</span><br><span class="line">   //   name: &#x27;小明&#x27;,</span><br><span class="line">   //   sayName: function () &#123;</span><br><span class="line">   //     console.log(this.name)</span><br><span class="line">   //   &#125;</span><br><span class="line">   // &#125;</span><br><span class="line">   // console.log(setTimeout(person.sayName, 0)) // mc</span><br><span class="line">   // console.log(setTimeout(person.sayName.bind(person), 0)) // 小明</span><br><span class="line">   // console.log(setTimeout(person.sayName.myCall(person), 0)) // 小明</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、apply的实现"><a href="#二、apply的实现" class="headerlink" title="二、apply的实现"></a>二、apply的实现</h3><ul>
+<li>前面实现和call一样。</li>
+<li>第二个参数可以传或者不传，参数必须是数组或者类数组。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.myApply = function(context, args = []) &#123;</span><br><span class="line">  const ctx = context || window;</span><br><span class="line"></span><br><span class="line">  const func = Symbol();</span><br><span class="line">  ctx[func] = this;</span><br><span class="line"></span><br><span class="line">  const res = args.length &gt; 0 ? ctx[func](...args) : ctx[func]();</span><br><span class="line"></span><br><span class="line">  delete ctx[func];</span><br><span class="line">  return res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(setTimeout(person.sayName.myApply(person), 0)) // 小明</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、bind的实现"><a href="#三、bind的实现" class="headerlink" title="三、bind的实现"></a>三、bind的实现</h3><p>​    考虑：</p>
+<ul>
+<li><code>bind()</code>除了<code>this</code>外，还可以传入多个参数。</li>
+<li><code>bind</code>新创建的函数可能传入多个参数。</li>
+<li>新函数可能被当做构造函数执行。</li>
+<li>函数可能有返回值。</li>
+</ul>
+<p>​    实现方法：</p>
+<ul>
+<li><code>bind</code>方法不会立即执行，会返回一个待执行的函数：（闭包）。</li>
+<li>实现作用域绑定（apply）。</li>
+<li>参数传递（apply数组传参）。</li>
+<li>作为构造函数时，作为原型继承。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// ## bind的实现</span><br><span class="line">    Function.prototype.myBind = function (context, ...args) &#123;</span><br><span class="line">      </span><br><span class="line">      // 1. 创建一个变量赋值为this，表示为当前函数</span><br><span class="line">      const fn = this</span><br><span class="line"></span><br><span class="line">      // 2. 判断有没有传参进来，若没有传参赋值为[]</span><br><span class="line">      args = args || []</span><br><span class="line"></span><br><span class="line">      // 3. 返回一个newFn函数，在里面调用fn函数</span><br><span class="line">      return function newFn (...newFnArgs) &#123;</span><br><span class="line">        if (this instanceof newFn) &#123;</span><br><span class="line">          return new fn(...args, ...newFnArgs)</span><br><span class="line">        &#125;</span><br><span class="line">        return fn.apply(context, [...args, ...newFnArgs])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    let name = &#x27;mc&#x27;</span><br><span class="line">    const person = &#123;</span><br><span class="line">      name: &#x27;小明&#x27;,</span><br><span class="line">      sayName: function () &#123;</span><br><span class="line">        console.log(this.name)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    console.log(setTimeout(person.sayName.myBind(person)(), 0)) // 小明</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/21/javascript%E7%B3%BB%E5%88%97-call%E3%80%81apply%E3%80%81bind/" data-id="ckq60fupf0001wgvmct7k0341" data-title="javascript系列-call、apply、bind" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javascript系列-ajax" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/17/javascript%E7%B3%BB%E5%88%97-ajax/" class="article-date">
+  <time class="dt-published" datetime="2021-06-17T00:38:33.000Z" itemprop="datePublished">2021-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/06/17/javascript%E7%B3%BB%E5%88%97-ajax/">javascript系列-ajax</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="一、定义"><a href="#一、定义" class="headerlink" title="一、定义"></a>一、定义</h3><p>​    <code>ajax</code>(Async Javascript and XML)，即异步的<code>javascript</code>和<code>XML</code>，是一种创建交互式网页应用的网页开发技术，可以在不重新刷新整个网页的情况下，与服务器交换数据，更新部分网页。</p>
+<p>​    原理：通过<code>XMLHttpRequest</code>对象向服务器发异步请求，从服务器获得数据，然后用<code>javascript</code>操作<code>DOM</code>来更新界面。</p>
+<h3 id="二、实现过程"><a href="#二、实现过程" class="headerlink" title="二、实现过程"></a>二、实现过程</h3><ul>
+<li>创建<code>XMLHttpRequest</code>对象。</li>
+<li>通过<code>XMLHttpRequest</code>对象的<code>open</code>方法与服务端建立连接。</li>
+<li>构建请求所需要的数据，通过<code>XMLHttpRequest</code>对象的<code>send</code>方法发送给服务器。</li>
+<li>通过<code>XMLHttpRequest</code>对象的<code>onreadystatechange</code>事件监听服务器端对你的通信状态。</li>
+<li>接收并处理服务器端响应的数据。</li>
+<li>将响应的数据反应到<code>DOM</code>上。</li>
+</ul>
+<h3 id="三、封装"><a href="#三、封装" class="headerlink" title="三、封装"></a>三、封装</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">function ajax (options) &#123;</span><br><span class="line">       // 创建一个XMLHttpRequest</span><br><span class="line">       const xhr = new XMLHttpRequest()</span><br><span class="line"></span><br><span class="line">       // 初始化参数内容</span><br><span class="line">       options = options || &#123;&#125;</span><br><span class="line">       options.method = (options.method || &#x27;GET&#x27;).toUpperCase();</span><br><span class="line">       options.dataType = options.dataType || &#x27;json&#x27;;</span><br><span class="line">       const params = options.data;</span><br><span class="line"></span><br><span class="line">       // 发送请求</span><br><span class="line">       if(options.method === &#x27;GET&#x27;) &#123;</span><br><span class="line">         xhr.open(&#x27;GET&#x27;, options.url + &#x27;?&#x27; + params, true);</span><br><span class="line">         xhr.send(null);</span><br><span class="line">       &#125;else if(options.method === &#x27;POST&#x27;) &#123;</span><br><span class="line">         xhr.open(&#x27;POST&#x27;, options.url, true);</span><br><span class="line">         xhr.send(params);</span><br><span class="line">       &#125;</span><br><span class="line">       </span><br><span class="line">       // 接收请求</span><br><span class="line">       xhr.onreadystatechange = function() &#123;</span><br><span class="line">         if(xhr.readyState === 4) &#123;</span><br><span class="line">           const status = xhr.status;</span><br><span class="line">           if(status &gt;= 200 &amp;&amp; status &lt; 300) &#123;</span><br><span class="line">             options.success &amp;&amp;  options.success(xhr.responseText, xhr.responseXml);</span><br><span class="line">           &#125;else &#123;</span><br><span class="line">             options.fail &amp;&amp;  options.fail(status);</span><br><span class="line">           &#125;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     ajax(&#123;</span><br><span class="line">       method: &#x27;post&#x27;,</span><br><span class="line">       url: &#x27;https:www.baidu.com&#x27;,</span><br><span class="line">       dataType: &#x27;json&#x27;,</span><br><span class="line">       data: &#123;&#125;,</span><br><span class="line">       success (text, xml) &#123;</span><br><span class="line">         // 请求成功后的回调函数</span><br><span class="line">         console.log(text)</span><br><span class="line">       &#125;,</span><br><span class="line">       fail (status) &#123;</span><br><span class="line">         // 请求失败后的回调函数</span><br><span class="line">         console.log(status)</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;)</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/17/javascript%E7%B3%BB%E5%88%97-ajax/" data-id="ckq60fuox0000wgvm67lp2rou" data-title="javascript系列-ajax" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-javascript系列-new操作符" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/06/16/javascript%E7%B3%BB%E5%88%97-new%E6%93%8D%E4%BD%9C%E7%AC%A6/" class="article-date">
@@ -640,120 +759,6 @@
 
 
   
-    <article id="post-javascript系列-作用域" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/" class="article-date">
-  <time class="dt-published" datetime="2021-06-02T02:30:19.000Z" itemprop="datePublished">2021-06-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/">javascript系列-作用域</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="一、作用域"><a href="#一、作用域" class="headerlink" title="一、作用域"></a>一、作用域</h3><p>​    作用域，即变量（变量作用域又称执行上下文）和函数生效（能被访问）的区域或集合。</p>
-<p>​    作用域决定了代码区块中变量和其他资源可见性。</p>
-<h3 id="二、分类"><a href="#二、分类" class="headerlink" title="二、分类"></a>二、分类</h3><h4 id="1-全局作用域"><a href="#1-全局作用域" class="headerlink" title="1. 全局作用域"></a>1. 全局作用域</h4><p>​    任何不在函数中或是大括号内声明的变量，都是在全局作用域中，全局作用域下声明的变量会在程序的任何地方可以访问到。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const greeting = &#x27;Hello World&#x27;;</span><br><span class="line">function greet() &#123;</span><br><span class="line">  console.log(greeting);    // Hello World</span><br><span class="line">&#125;</span><br><span class="line">greet();</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-函数作用域"><a href="#2-函数作用域" class="headerlink" title="2. 函数作用域"></a>2. 函数作用域</h4><p>​    函数作用域也称局部作用域，如果一个变量是在函数内部中声明的，它就在一个函数作用域下面。这些变量只能在函数内部中访问，而不能在函数外部中访问。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function greet() &#123;</span><br><span class="line">  const greeting = &#x27;Hello World&#x27;;</span><br><span class="line">  console.log(greeting);</span><br><span class="line">&#125;</span><br><span class="line">greet();                    // Hello World</span><br><span class="line">console.log(greeting);      // ReferenceError: greeting is not defined</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-块级作用域"><a href="#3-块级作用域" class="headerlink" title="3. 块级作用域"></a>3. 块级作用域</h4><p>​    let和const定义的变量，只能在大括号中使用，外部访问不到变量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  let greeting = &#x27;Hello World&#x27;;</span><br><span class="line">  var lang = &#x27;English&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(lang);        // English</span><br><span class="line">console.log(greeting);    // ReferenceError: greeting is not defined</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、词法作用域"><a href="#三、词法作用域" class="headerlink" title="三、词法作用域"></a>三、词法作用域</h3><p>​    词法作用域又叫静态作用域，变量被创建时就确定好了，而非执行阶段创建的。也就是说我们写好代码时它的作用域就确定了，<code>JavaScript</code> 遵循的就是词法作用域。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = 2;</span><br><span class="line">function foo() &#123;</span><br><span class="line">  console.log(a);     // 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function bar() &#123;</span><br><span class="line">  var a = 3;</span><br><span class="line">  foo();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bar();</span><br></pre></td></tr></table></figure>
-
-<p>​    由于<code>JavaScript</code>遵循词法作用域，相同层级的 <code>foo</code> 和 <code>bar</code> 就没有办法访问到彼此块作用域中的变量，所以输出2。</p>
-<h3 id="四、作用域链"><a href="#四、作用域链" class="headerlink" title="四、作用域链"></a>四、作用域链</h3><p>​    当在javascript中使用一个变量的时候，首先javascript引擎会尝试在当前作用域下寻找该变量，若未找到再到上一层作用域中去寻找，以此类推直到找到该变量或是已经到了全局作用域。</p>
-<p>​    如果在全局作用域里仍然找不到该变量，它就会在全局范围内隐式声明该变量(非严格模式下)或是直接报错。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var sex = &#x27;男&#x27;;</span><br><span class="line">function person() &#123;</span><br><span class="line">    var name = &#x27;张三&#x27;;</span><br><span class="line">    function student() &#123;</span><br><span class="line">        var age = 18;</span><br><span class="line">        console.log(name); // 张三</span><br><span class="line">        console.log(sex); // 男 </span><br><span class="line">    &#125;</span><br><span class="line">    student();</span><br><span class="line">    console.log(age); // Uncaught ReferenceError: age is not defined</span><br><span class="line">&#125;</span><br><span class="line">person();</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E4%BD%9C%E7%94%A8%E5%9F%9F/" data-id="ckpew97eo00007wvm46zz7doy" data-title="javascript系列-作用域" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-javascript系列-闭包" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/" class="article-date">
-  <time class="dt-published" datetime="2021-06-02T00:31:03.000Z" itemprop="datePublished">2021-06-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/">javascript系列-闭包</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="一、闭包是什么？"><a href="#一、闭包是什么？" class="headerlink" title="一、闭包是什么？"></a>一、闭包是什么？</h3><p>​    闭包指的是<strong>那些引用了另一个函数作用域中变量的函数</strong>，通常是在嵌套函数中使用。</p>
-<p>​    闭包可以让在内部函数中访问外部函数作用域。</p>
-<p>​    函数执行时，每个执行上下文中都会有一个包含其中变量的对象。全局上下文中的叫<code>变量对象</code>，它会在代码执行期间始终存在。而函数局部上下文中的叫<code>活动对象</code>，只会在函数执行期间存在。</p>
-<p>​    在一个函数内部定义的函数会把其包含函数的活动对象添加到自己的作用域中。</p>
-<p>​    每个函数在被调用时都会自动创建两个特殊变量：this 和 arguments。内部函数永远不可能直接访问外部函数的这两个变量。</p>
-<h3 id="二、使用场景"><a href="#二、使用场景" class="headerlink" title="二、使用场景"></a>二、使用场景</h3><p>​    任何闭包的使用场景都离不开以下两点：</p>
-<ul>
-<li>创建私有变量</li>
-<li>延长变量的生命周期</li>
-</ul>
-<h4 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1. 基本使用"></a>1. 基本使用</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function init() &#123;</span><br><span class="line">  var name = &#x27;mc&#x27;;</span><br><span class="line">  function displayName() &#123;</span><br><span class="line">    console.log(name);</span><br><span class="line">  &#125;</span><br><span class="line">  displayName();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">init();</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-在页面上添加一些可以调整字号的按钮"><a href="#2-在页面上添加一些可以调整字号的按钮" class="headerlink" title="2. 在页面上添加一些可以调整字号的按钮"></a>2. 在页面上添加一些可以调整字号的按钮</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function makeSizer(size) &#123;</span><br><span class="line">      return function() &#123;</span><br><span class="line">        document.body.style.fontSize = size + &#x27;px&#x27;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">const size1 = makeSizer(12);</span><br><span class="line">const size2 = makeSizer(14);</span><br><span class="line">const size3 = makeSizer(16);</span><br><span class="line"></span><br><span class="line">document.querySelector(&#x27;.demo1&#x27;).onclick = size1;</span><br><span class="line">document.querySelector(&#x27;.demo2&#x27;).onclick = size2;</span><br><span class="line">document.querySelector(&#x27;.demo3&#x27;).onclick = size3;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-柯里化函数"><a href="#3-柯里化函数" class="headerlink" title="3. 柯里化函数"></a>3. 柯里化函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function getArea(width) &#123;</span><br><span class="line">  return height =&gt; width * height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const getTenWidth = getArea(10);</span><br><span class="line">console.log(getTenWidth(20));   // 200</span><br><span class="line">console.log(getTenWidth(30));   // 300</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、注意事项"><a href="#三、注意事项" class="headerlink" title="三、注意事项"></a>三、注意事项</h3><p>​    过度使用闭包可能导致内存过度占用，因此建议仅在十分必要时使用。创建的函数被保存在变量中。把变量设置为等于 null 会解除对函数的引用，从而让垃圾回收程序可以将内存释放掉。作用域链也会被销毁，其他作用域（除全局作用域之外）也可以销毁。</p>
-<p>​    例如，在创建新的对象或者类时，方法通常应该关联于对象的原型，而不是定义到对象的构造器中。</p>
-<p>​    原因在于每个对象的创建，方法都会被重新赋值。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/02/javascript%E7%B3%BB%E5%88%97-%E9%97%AD%E5%8C%85/" data-id="ckpeujnzy0000ycvm95qofk3p" data-title="javascript系列-闭包" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -790,6 +795,14 @@
       <ul>
         
           <li>
+            <a href="/2021/06/21/javascript%E7%B3%BB%E5%88%97-call%E3%80%81apply%E3%80%81bind/">javascript系列-call、apply、bind</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/17/javascript%E7%B3%BB%E5%88%97-ajax/">javascript系列-ajax</a>
+          </li>
+        
+          <li>
             <a href="/2021/06/16/javascript%E7%B3%BB%E5%88%97-new%E6%93%8D%E4%BD%9C%E7%AC%A6/">javascript系列-new操作符</a>
           </li>
         
@@ -799,14 +812,6 @@
         
           <li>
             <a href="/2021/06/11/javascript%E7%B3%BB%E5%88%97-typeof%E5%92%8Cinstanceof/">javascript系列-typeof和instanceof</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/10/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E6%A8%A1%E5%9E%8B/">javascript系列-事件模型</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/09/javascript%E7%B3%BB%E5%88%97-%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E6%89%A7%E8%A1%8C%E6%A0%88-js/">javascript系列-执行上下文和执行栈.js</a>
           </li>
         
       </ul>
