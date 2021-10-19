@@ -71,6 +71,44 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/19/11/" class="article-date">
+  <time class="dt-published" datetime="2021-10-19T08:18:04.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/10/19/11/">11</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/19/11/" data-id="ckuxtdywt0000fkvm4spxaho6" data-title="11" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-操作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/19/%E6%93%8D%E4%BD%9C/" class="article-date">
@@ -690,84 +728,6 @@
 
 
   
-    <article id="post-javascript系列-继承" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/" class="article-date">
-  <time class="dt-published" datetime="2021-06-04T05:13:37.000Z" itemprop="datePublished">2021-06-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/">javascript系列-继承</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>子类具有父类各种属性和方法。</p>
-<h4 id="1-原型链继承"><a href="#1-原型链继承" class="headerlink" title="1. 原型链继承"></a>1. 原型链继承</h4><ul>
-<li>原型中引用值会在所有实例中共享，这也是为什么会在构造函数中定义而不在原型上的原因。</li>
-<li>子类型在实例化时不能给父类型构造函数传参</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function SuperType() &#123;</span><br><span class="line">  this.colors = [&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;];</span><br><span class="line">&#125;</span><br><span class="line">function SubType() &#123;&#125;</span><br><span class="line">SubType.prototype = new SuperType();</span><br><span class="line">const instance1 = new SubType();</span><br><span class="line">instance1.colors.push(&#x27;black&#x27;);</span><br><span class="line">console.log(instance1.colors);          // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;black&#x27; ]</span><br><span class="line">const instance2 = new SubType();</span><br><span class="line">console.log(instance2.colors);          // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;black&#x27; ]</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-盗用构造函数继承（对象伪装或者经典继承）"><a href="#2-盗用构造函数继承（对象伪装或者经典继承）" class="headerlink" title="2. 盗用构造函数继承（对象伪装或者经典继承）"></a>2. 盗用构造函数继承（对象伪装或者经典继承）</h4><ul>
-<li>核心思想: 子类构造函数调用父类构造函数</li>
-<li>原因: 函数是在特定上下文中执行代码的简单对象，可以使用apply()和call()方法以新创建的对象为上下文执行构造函数。</li>
-<li>优点: 可以在子类构造函数中向父类构造函数传参</li>
-<li>缺点：必须在构造函数中定义方法，函数不能重用；子类也不能访问父类原型上的方法。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">function superType(name) &#123;</span><br><span class="line">  this.colors = [&#x27;red&#x27;, &#x27;green&#x27;];</span><br><span class="line">  this.name = name;</span><br><span class="line">&#125;</span><br><span class="line">superType.prototype.sayName = function() &#123;</span><br><span class="line">  console.log(`This is $&#123;this.name&#125;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function subType() &#123;</span><br><span class="line">  superType.call(this, &#x27;mc&#x27;);</span><br><span class="line">  this.age = 18;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const instance1 = new subType();      </span><br><span class="line">instance1.colors.push(&#x27;black&#x27;);</span><br><span class="line">const instance2 = new subType();</span><br><span class="line">console.log(instance1.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;black&#x27; ]</span><br><span class="line">console.log(instance2.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27; ]</span><br><span class="line">console.log(instance1.name, instance1.age);   // mc 18</span><br><span class="line">console.log(instance1.sayName());             // TypeError: instance1.sayName is not a function</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-组合继承（伪经典继承）"><a href="#3-组合继承（伪经典继承）" class="headerlink" title="3. 组合继承（伪经典继承）"></a>3. 组合继承（伪经典继承）</h4><ul>
-<li>描述：综合了盗用构造函数和原型链</li>
-<li>思路：通过原型链来继承原型上的属性和方法，通过盗用构造函数来继承实例属性</li>
-<li>组合继承也保留了 instanceof 操作符和 isPrototypeOf()方法识别合成对象的能力</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">function superType(name) &#123;</span><br><span class="line">  this.colors = [&#x27;red&#x27;, &#x27;green&#x27;];</span><br><span class="line">  this.name = name;</span><br><span class="line">&#125;</span><br><span class="line">superType.prototype.sayName = function() &#123;</span><br><span class="line">  console.log(`This is $&#123;this.name&#125;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function subType() &#123;</span><br><span class="line">  // 继承属性</span><br><span class="line">  superType.call(this, &#x27;mc&#x27;);</span><br><span class="line">  this.age = 18;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 继承方法</span><br><span class="line">subType.prototype = new superType();</span><br><span class="line">subType.prototype.sayHello = function() &#123;</span><br><span class="line">  console.log(`Hello~`);</span><br><span class="line">&#125;</span><br><span class="line">const instance1 = new subType();      </span><br><span class="line">instance1.colors.push(&#x27;black&#x27;);</span><br><span class="line">const instance2 = new subType();</span><br><span class="line">console.log(instance1.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;black&#x27; ]</span><br><span class="line">console.log(instance2.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27; ]</span><br><span class="line">console.log(instance1.name, instance1.age);   // mc 18</span><br><span class="line">console.log(instance1.sayName());             // This is mc</span><br><span class="line">console.log(instance2.sayHello());            // Hello</span><br><span class="line">console.log(instance1 instanceof superType);  // true</span><br><span class="line">console.log(superType.prototype.isPrototypeOf(instance2));    // true</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-原型式继承"><a href="#4-原型式继承" class="headerlink" title="4. 原型式继承"></a>4. 原型式继承</h4><ul>
-<li>定义：即使不定义类型也可以通过原型实现对象之间的信息共享创建一个临时构造函数，将传入的对象赋值给这个构造函数的原型，然后返回这个临时类型的一个实例。本质上是对传入对象实现了一次浅复制。</li>
-<li>使用场景：你有一个对象，想在它的基础上再创建一个新对象。你需要把这个对象先传给 object()，然后再对返回的对象进行适当修改</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function object(o) &#123;</span><br><span class="line">  function F() &#123; &#125;</span><br><span class="line">  F.prototype = o;</span><br><span class="line">  return new F();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let person = &#123;</span><br><span class="line">  name: &quot;Nicholas&quot;,</span><br><span class="line">  friends: [&quot;Shelby&quot;, &quot;Court&quot;, &quot;Van&quot;]</span><br><span class="line">&#125;;</span><br><span class="line">let anotherPerson = object(person);</span><br><span class="line">anotherPerson.name = &quot;Greg&quot;;</span><br><span class="line">anotherPerson.friends.push(&quot;Rob&quot;);</span><br><span class="line">let yetAnotherPerson = object(person);</span><br><span class="line">yetAnotherPerson.name = &quot;Linda&quot;;</span><br><span class="line">yetAnotherPerson.friends.push(&quot;Barbie&quot;);</span><br><span class="line">console.log(person.friends);            // [ &#x27;Shelby&#x27;, &#x27;Court&#x27;, &#x27;Van&#x27;, &#x27;Rob&#x27;, &#x27;Barbie&#x27; ]</span><br><span class="line">console.log(anotherPerson.friends);     // [ &#x27;Shelby&#x27;, &#x27;Court&#x27;, &#x27;Van&#x27;, &#x27;Rob&#x27;, &#x27;Barbie&#x27; ]</span><br><span class="line">const instance1 = Object.create(person, &#123;</span><br><span class="line">  name: &#123;</span><br><span class="line">    value: &#x27;Gery&#x27;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(instance1.friends, instance1.name);         // [ &#x27;Shelby&#x27;, &#x27;Court&#x27;, &#x27;Van&#x27;, &#x27;Rob&#x27;, &#x27;Barbie&#x27; ] Gery</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="5-寄生式继承"><a href="#5-寄生式继承" class="headerlink" title="5. 寄生式继承"></a>5. 寄生式继承</h4><ul>
-<li>思路：类似于寄生构造函数和工厂模式，创建一个实现继承的函数，以某种方式增强对象，然后返回这个对象。</li>
-<li>注意：通过寄生式继承给对象添加函数会导致函数难以重用，与构造函数模式类似。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function createAnother(original) &#123;</span><br><span class="line">  let clone = object(original);</span><br><span class="line">  clone.sayHi = () =&gt; &#123;</span><br><span class="line">    console.log(&#x27;Hi~&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  return clone;</span><br><span class="line">&#125;</span><br><span class="line">let person = &#123;</span><br><span class="line">  name: &#x27;mc&#x27;</span><br><span class="line">&#125;</span><br><span class="line">let anotherPerson = createAnother(person);</span><br><span class="line">console.log(anotherPerson.sayHi());     // Hi</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-寄生式组合继承"><a href="#6-寄生式组合继承" class="headerlink" title="6. 寄生式组合继承"></a>6. 寄生式组合继承</h4><ul>
-<li>组合继承会两次调用父类构造函数，一次是创建子类原型时调用的，一类是子类构造函数中调用的。</li>
-<li>思路：不通过调用父类构造函数给子类原型赋值，而是取用父类原型上的一个副本，使用寄生式继承来继承父类原型，将返回的新对象赋值给子类原型。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">function object(o) &#123;</span><br><span class="line">  function F() &#123;&#125;;</span><br><span class="line">  F.prototype = o;</span><br><span class="line">  return new F();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function inheritPrototype(subType, superType) &#123;</span><br><span class="line">  let prototype = object(superType.prototype);    // 创建对象</span><br><span class="line">  // let prototype = Object.create(superType.prototype);</span><br><span class="line">  prototype.constructor = subType;                // 增强对象</span><br><span class="line">  subType.prototype = prototype;                  // 赋值对象</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function superType(name) &#123;</span><br><span class="line">  this.colors = [&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;];</span><br><span class="line">  this.name = name;</span><br><span class="line">&#125;</span><br><span class="line">superType.prototype.sayName = function() &#123;</span><br><span class="line">  console.log(`This is $&#123;this.name&#125;`);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function subType() &#123;</span><br><span class="line">  superType.call(this, &#x27;mc&#x27;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">inheritPrototype(subType, superType);</span><br><span class="line"></span><br><span class="line">const instance1 = new subType();      </span><br><span class="line">instance1.colors.push(&#x27;black&#x27;);</span><br><span class="line">const instance2 = new subType();</span><br><span class="line">console.log(instance1.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27;, &#x27;black&#x27; ]</span><br><span class="line">console.log(instance2.colors);                // [ &#x27;red&#x27;, &#x27;green&#x27; ]</span><br><span class="line">console.log(instance1.name);                  // mc </span><br><span class="line">console.log(instance1.sayName());             // This is mc</span><br><span class="line">console.log(instance1 instanceof superType);  // true</span><br><span class="line">console.log(superType.prototype.isPrototypeOf(instance2));    // true</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/04/javascript%E7%B3%BB%E5%88%97-%E7%BB%A7%E6%89%BF/" data-id="ckphynxzg0000agvm9lgy2xxu" data-title="javascript系列-继承" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -804,6 +764,10 @@
       <ul>
         
           <li>
+            <a href="/2021/10/19/11/">11</a>
+          </li>
+        
+          <li>
             <a href="/2021/10/19/%E6%93%8D%E4%BD%9C/">(no title)</a>
           </li>
         
@@ -817,10 +781,6 @@
         
           <li>
             <a href="/2021/06/16/javascript%E7%B3%BB%E5%88%97-new%E6%93%8D%E4%BD%9C%E7%AC%A6/">javascript系列-new操作符</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/15/javascript%E7%B3%BB%E5%88%97-%E4%BA%8B%E4%BB%B6%E4%BB%A3%E7%90%86/">javascript系列-事件代理</a>
           </li>
         
       </ul>
